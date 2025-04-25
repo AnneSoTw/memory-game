@@ -3,7 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <title>Wedding Memory Game</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&family=Merriweather&display=swap" rel="stylesheet">
+  <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
   <style>
         body {
             font-family: 'Merriweather', serif;
@@ -295,7 +299,7 @@
             matches++;
             resetSelection();
             if (matches === images.length) endGame();
-          }, 400);
+          }, 250);
         } else {
           setTimeout(() => {
             firstCard.element.src = backImage;
@@ -305,7 +309,7 @@
             fails++;
             score -= 2;
             resetSelection();
-          }, 700);
+          }, 400);
         }
       }
     }
@@ -343,10 +347,7 @@ function endGame() {
       document.getElementById('game-end').style.display = 'none';
       startGame(); // reshuffle and restart
     }
-  </script>
 
-  <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
-  <script>
     (function() {
       emailjs.init(EMAILJS_PUBLIC_KEY);
     })();
