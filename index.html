@@ -205,6 +205,37 @@
         .question-info-text {
              color: #a1887f;
         }
+
+    .card-img {
+  width: 22vw;  /* Responsive width */
+  max-width: 100px;  /* Don’t go over 100px on large screens */
+  height: auto;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+@media (min-width: 600px) {
+  #game-board {
+    grid-template-columns: repeat(5, 1fr);
+  }
+}
+
+@media (max-width: 599px) {
+  #game-board {
+    grid-template-columns: repeat(3, 1fr); /* Smaller grid for phones */
+    gap: 8px;
+  }
+
+  .card-img {
+    width: 28vw;
+    max-width: 90px;
+  }
+
+  input, button {
+    font-size: 1rem;
+  }
+}
   </style>
 </head>
 <body>
