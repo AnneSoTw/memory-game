@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Wedding Memory Game</title>
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&family=Merriweather&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Merriweather', serif;
+      text-align: center;
+      background-color: #fffafc;
+      padding: 20px;
+    }
+
+    .romantic-font {
+      font-family: 'Dancing Script', cursive;
+      font-size: 2.5rem;
+      color: #e91e63;
+    }
+
+    .game-container {
+      max-width: 800px;
+      margin: auto;
+    }
+
+    .game-button {
+      padding: 10px 20px;
+      font-size: 1rem;
+      border: none;
+      border-radius: 8px;
+      background-color: #ff69b4;
+      color: white;
+      cursor: pointer;
+    }
+
+    .card {
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    #game-board {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 8px;
+      justify-content: center;
+      margin-top: 20px;
+    }
+
+    .award-certificate {
+      padding: 20px;
+      background-color: #fff0f5;
+      border: 2px solid #f8bbd0;
+      border-radius: 12px;
+      margin-top: 30px;
+    }
+
+    .award-title {
+      font-size: 2rem;
+      color: #d81b60;
+      font-family: 'Dancing Script', cursive;
+    }
+
+    .award-text {
+      margin-top: 10px;
+      font-size: 1.2rem;
+    }
+
+    .save-the-date-text {
+      margin-top: 20px;
+      font-style: italic;
+      color: #ad1457;
+    }
+  </style>
+</head>
+<body>
+  <div class="game-container">
+    <h2 class="romantic-font">Wedding Memory Game </h2>
+    <div id="user-form">
+      <input type="text" id="name" placeholder="Enter your name" required><br><br>
+      <input type="email" id="email" placeholder="Enter your email" required><br>
+      <button class="game-button" onclick="startGame()">Start Game</button>
+    </div>
+    <div id="game-board" style="display:none;"></div>
+    <div id="game-end" style="display:none;"></div>
+  </div>
+
+  <script>
+        // --- EmailJS Configuration ---
+        const EMAILJS_SERVICE_ID = 'service_3qozdwc';
+        const EMAILJS_TEMPLATE_ID = 'template_q69067c';
+        const EMAILJS_PUBLIC_KEY = 'cDxOmMxePGWSWrLPG';
+    const images = [
+      'https://picsum.photos/100?1', 'https://picsum.photos/100?2', 'https://picsum.photos/100?3',
+      'https://picsum.photos/100?4', 'https://picsum.photos/100?5', 'https://picsum.photos/100?6',
+      'https://picsum.photos/100?7', 'https://picsum.photos/100?8', 'https://picsum.photos/100?9',
+      'https://picsum.photos/100?10'
+    ];
+    const backImage = 'https://yourdomain.com/your-logo.jpg';
+    let cards = [], firstCard = null, secondCard = null;
+    let matches = 0, score = 0, fails = 0;
+    let startTime;
+
+    function shuffle(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+    }
+
+    function startGame() {
+      const name = document.getElementById('name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      if (!name || !email) return alert("Please enter both name and email");
+
+      document.getElementById('user-form').style.display = 'none';
+      document.getElementById('game-end').style.display = 'none';
+      document.getElementById('game-board').style.display = 'grid';
+
+      let doubleImages = [...images, ...images];
+      shuffle(doubleImages);
+      cards = doubleImages.map((src, idx) => ({ id: idx, src, matched: false }));
+
+      const board = document.getElementById('game-board');
+      board.innerHTML = '';
+      board.style.gridTemplateColumns = 'repeat(5, 1fr)';
+      board.style.gap = '8px';
+
+      cards.forEach(card => {
+        const div = document.createElement('div');
+        div.className = 'card';
+        div.innerHTML = `<img src="${backImage}" data-id="${card.id}" class="card-img" style="width: 100px; height: 100px; cursor: pointer; border-radius: 0.5rem;">`;
+        board.appendChild(div);
+      });
+
+      board.querySelectorAll('img').forEach(img => img.addEventListener('click', onCardClick));
+      matches = 0;
+      score = 0;
+      fails = 0;
+      startTime = new Date();
+    }
+
+    function onCardClick(e) {
+      const id = parseInt(e.target.dataset.id);
+      const card = cards.find(c => c.id === id);
+      if (card.matched || e.target.classList.contains('flipped')) return;
+
+      e.target.src = card.src;
+      e.target.classList.add('flipped');
+
+      if (!firstCard) {
+        firstCard = { ...card, element: e.target };
+      } else if (!secondCard && firstCard.id !== card.id) {
+        secondCard = { ...card, element: e.target };
+
+        if (firstCard.src === secondCard.src) {
+          setTimeout(() => {
+            firstCard.element.style.visibility = 'hidden';
+            secondCard.element.style.visibility = 'hidden';
+            cards[firstCard.id].matched = true;
+            cards[secondCard.id].matched = true;
+            score++;
+            matches++;
+            resetSelection();
+            if (matches === images.length) endGame();
+          }, 400);
+        } else {
+          setTimeout(() => {
+            firstCard.element.src = backImage;
+            secondCard.element.src = backImage;
+            firstCard.element.classList.remove('flipped');
+            secondCard.element.classList.remove('flipped');
+            fails++;
+            score -= 2;
+            resetSelection();
+          }, 700);
+        }
+      }
+    }
+
+    function resetSelection() {
+      firstCard = null;
+      secondCard = null;
+    }
+
+function endGame() {
+      const duration = Math.round((new Date() - startTime) / 1000);
+      document.getElementById('game-board').style.display = 'none';
+      const name = document.getElementById('name').value;
+      const email = document.getElementById('email').value;
+      document.getElementById('game-end').innerHTML = `
+        <div class="award-certificate">
+          <div class="award-title">Certificate of Memory Mastery</div>
+          <div class="award-text">Congratulations ${name} 💖<br>You completed the game with a score of ${score}<br>in ${duration} seconds!</div>
+          <div class="save-the-date-text">Save this date in your heart 💌</div>
+          <button class="game-button" onclick="replayGame()">🔁 Play Again</button>
+        </div>
+      `;
+      document.getElementById('game-end').style.display = 'block';
+
+      // EmailJS
+      emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+        nickname: name,
+        email: email,
+        score: score,
+        time: duration
+      }, EMAILJS_PUBLIC_KEY);
+    }
+
+    function replayGame() {
+      document.getElementById('game-end').style.display = 'none';
+      startGame(); // reshuffle and restart
+    }
+  </script>
+
+  <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
+  <script>
+    (function() {
+      emailjs.init(EMAILJS_PUBLIC_KEY);
+    })();
+  </script>
+</body>
+</html>
