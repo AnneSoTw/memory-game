@@ -1,16 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Wedding Memory Game</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&family=Merriweather&display=swap" rel="stylesheet">
-  <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
-  <style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我們的記憶遊戲 / Our Memory Game</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Merriweather:wght@400;700&family=Noto+Sans+TC:wght@400;700&display=swap" rel="stylesheet">
+    <script type="text/javascript"
+        src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <style>
+        /* --- Inherited Bilingual Wedding Theme Styles (Adapted) --- */
         body {
-            font-family: 'Merriweather', serif;
+            font-family: 'Merriweather', 'Noto Sans TC', serif;
             background: linear-gradient(to bottom, #f5f0e8, #e6dacb);
             display: flex;
             justify-content: center;
@@ -25,363 +28,644 @@
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
             padding: 2.5rem;
             width: 100%;
-            max-width: 650px;
+            max-width: 650px; /* Adjust as needed */
             text-align: center;
             border: 1px solid #d7ccc8;
         }
         .romantic-font {
-            font-family: 'Dancing Script', cursive;
+            font-family: 'Dancing Script', 'Noto Sans TC', cursive;
             color: #8d6e63;
         }
+        .lang-zh { display: block; font-weight: bold; margin-bottom: 0.15rem; font-family: 'Noto Sans TC', sans-serif; color: inherit; }
+        .lang-en { display: block; font-size: 0.9em; color: inherit; }
+
         .game-button {
-            font-family: 'Merriweather', serif;
-            font-weight: bold;
+            font-family: 'Merriweather', 'Noto Sans TC', serif; font-weight: bold;
             background-image: linear-gradient(to right, #d4af37, #c09b2d);
-            color: white;
-            padding: 0.8rem 1.8rem;
-            border: none;
-            border-radius: 2rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            margin-top: 1.5rem;
-            display: inline-block;
+            color: white; padding: 0.8rem 1.8rem; border: none; border-radius: 2rem;
+            cursor: pointer; transition: all 0.3s ease; text-transform: uppercase;
+            letter-spacing: 1px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-top: 1.5rem; display: inline-block; line-height: 1.4;
         }
-        .game-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-            filter: brightness(1.05);
+        .game-button .lang-zh { color: white; }
+        .game-button .lang-en { color: white; font-size: 0.8em; }
+        .game-button:hover { transform: translateY(-2px); box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); filter: brightness(1.05); }
+        .game-button:active { transform: translateY(0); box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); }
+
+        /* Input fields */
+        input[type="text"], input[type="email"] {
+            font-family: 'Merriweather', 'Noto Sans TC', serif;
+            border: 1px solid #d7ccc8; border-radius: 0.5rem;
+            color: #5d4037; /* Ensure text color */
         }
-        .game-button:active {
-            transform: translateY(0);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        input[type="text"]:focus, input[type="email"]:focus {
+             border-color: #d4af37; box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.2);
+             outline: none;
         }
-        .option-button {
-            display: block;
-            width: 100%;
+        /* Helper class */
+        .hidden { display: none; }
+
+        /* --- Memory Game Specific Styles --- */
+        #game-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+            font-family: 'Merriweather', 'Noto Sans TC', serif;
+            font-weight: bold;
+            color: #8d6e63;
+            font-size: 0.9rem; /* Slightly smaller */
+        }
+        #game-info > div { /* Target moves and timer divs */
             background-color: #f5f5f5;
-            color: #5d4037;
-            padding: 0.85rem;
-            margin-top: 0.85rem;
+            padding: 0.4rem 0.8rem;
             border-radius: 0.5rem;
             border: 1px solid #e0e0e0;
-            transition: all 0.2s ease;
-            text-align: left;
-            font-size: 0.95rem;
-            font-family: 'Merriweather', serif;
         }
-        .option-button:hover {
-            border-color: #d4af37;
-            background-color: #ffffff;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        #game-info .lang-zh, #game-info .lang-en { display: inline; margin: 0 0.1em; } /* Display inline for info */
+        #game-info .lang-en { font-size: 0.95em; }
+
+        #game-board {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr); /* Start with 4 for smaller screens */
+            gap: 10px;
+            perspective: 1000px;
+            margin-top: 1rem;
         }
-        .modal {
-            position: fixed;
-            left: 0;
-            top: 0;
+
+        .card {
+            background-color: transparent;
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            cursor: pointer;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.6s, opacity 0.5s; /* Add opacity transition */
+        }
+
+        .card.is-flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card-face {
+            position: absolute;
             width: 100%;
             height: 100%;
-            background-color: rgba(93, 64, 55, 0.7);
+            backface-visibility: hidden;
             display: flex;
             justify-content: center;
             align-items: center;
-            z-index: 1000;
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+            overflow: hidden;
+        }
+
+        .card-face--front img, .card-face--back img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .card-face--front {
+             background-color: #e0e0e0;
+             transform: rotateY(180deg);
+        }
+
+        .card-face--back {
+            background-color: #a1887f;
+            border: 3px solid #fffaf0;
+        }
+
+        /* Style matched cards - removing instead of fading */
+        .card.is-removing {
             opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.3s ease, visibility 0.3s ease;
-        }
-        .modal.show {
-            opacity: 1;
-            visibility: visible;
-        }
-        .modal-content {
-            background-color: #fffdf9;
-            padding: 2.5rem;
-            border-radius: 1rem;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-            text-align: center;
-            max-width: 90%;
-            width: 450px;
-            border: 1px solid #e0e0e0;
-        }
-        .modal-message {
-            margin-bottom: 1.5rem;
-            font-size: 1.1rem;
-            color: #5d4037;
-        }
-        .modal-button {
-             font-family: 'Merriweather', serif;
-             font-weight: bold;
-             background-color: #a5d6a7;
-             color: #388e3c;
-             padding: 0.6rem 1.2rem;
-             border: none;
-             border-radius: 2rem;
-             cursor: pointer;
-             transition: background-color 0.3s ease;
-             font-size: 0.8rem;
-             text-transform: uppercase;
-        }
-         .modal-button:hover {
-             background-color: #81c784;
-         }
-         /* Award Certificate */
-         .award-certificate {
-            border: 8px double #c09b2d;
-            padding: 2rem;
-            margin-top: 2.5rem;
-            background-color: #fffaf0;
-            border-radius: 0.5rem;
-            position: relative; /* Keep relative for potential future absolute elements inside */
-            text-align: center; /* Center align contents */
-         }
-         .award-title {
-            font-family: 'Dancing Script', cursive;
-            color: #a1887f;
-            font-size: 2rem;
-            margin-bottom: 1.5rem;
-         }
-         .award-text {
-            color: #795548;
-            font-size: 1rem;
-            line-height: 1.7;
-            margin-bottom: 1.5rem; /* Add space below text */
-         }
-         .award-seal {
-            /* Removed position: absolute */
-            display: inline-flex; /* Use inline-flex to center content */
-            justify-content: center;
-            align-items: center;
-            width: 60px;
-            height: 60px;
-            background-color: #e57373;
-            border-radius: 50%;
-            color: white;
-            font-size: 1.5rem;
-            font-weight: bold;
-            box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
-            font-family: sans-serif;
-            margin-top: 1rem; /* Add space above the seal */
-         }
-         .award-seal::before {
-            content: '♥';
-         }
-         /* Style for the new text below the seal */
-         .save-the-date-text {
-            margin-top: 0.75rem; /* Space below seal */
-            font-size: 0.9rem;
-            color: #a1887f; /* Muted brown */
-            font-weight: bold;
-         }
-         /* Style for email status message */
-        #email-status {
-            margin-top: 1.5rem;
-            margin-bottom: 1rem;
-            font-size: 0.9rem;
-            font-weight: bold;
-        }
-        .email-success { color: #388e3c; }
-        .email-error { color: #c62828; }
-        .email-sending { color: #6d4c41; }
-        /* Input field styling */
-        input[type="text"], input[type="email"] {
-            font-family: 'Merriweather', serif;
-            border: 1px solid #d7ccc8;
-            border-radius: 0.5rem;
-        }
-        input[type="text"]:focus, input[type="email"]:focus {
-             border-color: #d4af37;
-             box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.2);
-             outline: none;
-        }
-        /* Score/Timer Text */
-        .score-time-text {
-            font-family: 'Merriweather', serif;
-            font-weight: bold;
-            color: #8d6e63;
-        }
-        .question-info-text {
-             color: #a1887f;
+            transform: scale(0.9); /* Optional shrink effect */
+            pointer-events: none; /* Make invisible cards unclickable */
         }
 
-    .card-img {
-  width: 22vw;  /* Responsive width */
-  max-width: 100px;  /* Don’t go over 100px on large screens */
-  height: auto;
-  border-radius: 0.5rem;
-  cursor: pointer;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-}
 
-@media (min-width: 600px) {
-  #game-board {
-    grid-template-columns: repeat(5, 1fr);
-  }
-}
+        /* Responsive adjustments for game board */
+        @media (min-width: 480px) {
+            #game-board { grid-template-columns: repeat(5, 1fr); gap: 12px; }
+        }
+        @media (min-width: 640px) {
+            #game-board { grid-template-columns: repeat(5, 1fr); gap: 15px; }
+            #game-info { font-size: 1rem; }
+        }
 
-@media (max-width: 599px) {
-  #game-board {
-    grid-template-columns: repeat(3, 1fr); /* Smaller grid for phones */
-    gap: 8px;
-  }
+         /* Award Certificate & Social Share Styles */
+         .award-certificate { border: 8px double #c09b2d; padding: 2rem; margin-top: 2.5rem; background-color: #fffaf0; border-radius: 0.5rem; position: relative; text-align: center; }
+         .award-title { font-family: 'Dancing Script', 'Noto Sans TC', cursive; color: #a1887f; font-size: 2rem; margin-bottom: 1.5rem; line-height: 1.3; }
+         .award-text { color: #795548; font-size: 1rem; line-height: 1.7; margin-bottom: 1.5rem; }
+         .award-text .lang-zh, .award-text .lang-en { color: inherit; }
+         .award-text strong { font-weight: bold; color: #8d6e63; }
+         .award-logo { display: block; width: 80px; height: 80px; margin: 1.5rem auto 1rem auto; border-radius: 0.25rem; object-fit: contain; }
+         .save-the-date-text { margin-top: 0.75rem; font-size: 0.9rem; color: #a1887f; font-weight: bold; line-height: 1.4; }
+         .save-the-date-text .lang-zh, .save-the-date-text .lang-en { color: inherit; }
+         .social-share-section { margin-top: 2rem; }
+         .social-share-text { font-size: 0.9rem; color: #a1887f; font-weight: bold; margin-bottom: 0.75rem; line-height: 1.4; }
+         .social-share-text .lang-zh, .social-share-text .lang-en { color: inherit; }
+         .social-icon-link { display: inline-block; transition: opacity 0.3s ease; }
+         .social-icon-link:hover { opacity: 0.8; }
+         .social-icon-link svg { width: 36px; height: 36px; }
+         #email-status { margin-top: 1.5rem; margin-bottom: 1rem; font-size: 0.9rem; font-weight: bold; line-height: 1.4; }
+         #email-status .lang-zh, #email-status .lang-en { color: inherit; }
+         .email-success { color: #388e3c; }
+         .email-error { color: #c62828; }
+         .email-sending { color: #6d4c41; }
 
-  .card-img {
-    width: 28vw;
-    max-width: 90px;
-  }
-
-  input, button {
-    font-size: 1rem;
-  }
-}
-  </style>
+    </style>
 </head>
 <body>
-  <div class="game-container">
-        <div id="user-form">
-            <h1 class="text-4xl font-bold mb-6 romantic-font">Wedding Memory Game!</h1>
-            <p class="mb-5 text-gray-600">Please enter your details:</p>
-            <input type="text" id="name" placeholder="Your Name" class="w-full p-3 border rounded-lg mb-3 focus:outline-none" required>
-            <input type="email" id="email" placeholder="Your Email" class="w-full p-3 border rounded-lg mb-4 focus:outline-none" required>
-            <button id="start-button" onclick="startGame()" class="game-button">Start Quiz</button>
+    <div class="game-container">
+
+        <div id="welcome-screen">
+             <h1 class="text-4xl font-bold mb-6 romantic-font">
+                <span class="lang-zh">歡迎來玩記憶遊戲！</span>
+                <span class="lang-en">Welcome to the Memory Game!</span>
+            </h1>
+            <p class="mb-5 text-gray-600" style="line-height: 1.6;">
+                <span class="lang-zh">遊戲規則：<br>1. 輸入您的姓名和電子郵件。<br>2. 點擊卡片，找出所有配對！<br>3. 完成後查看您的步數和時間。<br>4. 結果將自動發送給我們。</span>
+                <span class="lang-en">How to play:<br>1. Enter your name and email.<br>2. Click cards to find all the matches!<br>3. See your moves and time at the end.<br>4. Results will be sent automatically.</span>
+            </p>
+            <button id="continue-button" class="game-button">
+                <span class="lang-zh">繼續</span>
+                <span class="lang-en">Continue</span>
+            </button>
+        </div>
+
+        <div id="start-screen" class="hidden">
+            <h1 class="text-4xl font-bold mb-6 romantic-font">
+                 <span class="lang-zh">輸入您的資料</span>
+                 <span class="lang-en">Enter Your Details</span>
+            </h1>
+            <p class="mb-5 text-gray-600">
+                <span class="lang-zh">請輸入您的姓名和電子郵件以開始：</span>
+                <span class="lang-en">Please enter your name and email to start:</span>
+            </p>
+            <input type="text" id="nickname" placeholder="Your Name / 您的姓名" class="w-full p-3 border rounded-lg mb-3 focus:outline-none" required>
+            <input type="email" id="email" placeholder="Your Email / 您的電子郵件" class="w-full p-3 border rounded-lg mb-4 focus:outline-none" required>
+            <button id="start-game-button" class="game-button">
+                <span class="lang-zh">開始遊戲</span>
+                <span class="lang-en">Start Game</span>
+            </button>
             <p id="start-error" class="text-red-600 mt-3 text-sm"></p>
         </div>
-    <div id="game-board" style="display:none;"></div>
-    <div id="game-end" style="display:none;"></div>
-  </div>
 
-  <script>
+        <div id="game-screen" class="hidden">
+             <h1 class="text-3xl font-bold mb-4 romantic-font">
+                <span class="lang-zh">找出配對！</span>
+                <span class="lang-en">Find the Matches!</span>
+            </h1>
+            <div id="game-info">
+                <div id="moves-counter">
+                    <span class="lang-zh">步數:</span><span class="lang-en">Moves:</span> 0
+                </div>
+                <div id="timer-display">
+                    <span class="lang-zh">時間:</span><span class="lang-en">Time:</span> 0s
+                </div>
+            </div>
+            <div id="game-board"></div>
+        </div>
+
+        <div id="results-screen" class="hidden">
+             <h1 class="text-4xl font-bold mb-5 romantic-font">
+                 <span class="lang-zh">遊戲完成！</span>
+                 <span class="lang-en">Game Complete!</span>
+             </h1>
+
+            <div id="email-status"></div>
+
+            <div class="award-certificate">
+                 <div class="award-title">
+                     <span class="lang-zh">記憶大師證書</span>
+                     <span class="lang-en">Certificate of Memory Mastery</span>
+                 </div>
+                 <div class="award-text">
+                      <span class="lang-zh">謹將此證書頒發給<br><strong id="award-nickname-zh" class="text-lg"></strong><br>感謝您與我們一同慶祝並完成記憶遊戲<br>日期：<span id="completion-date-zh"></span><br>步數：<strong id="award-moves-zh"></strong>，時間：<strong id="award-time-zh"></strong> 秒</span>
+                     <span class="lang-en">This certificate is happily presented to<br><strong id="award-nickname-en" class="text-lg"></strong><br>for celebrating with us and completing the Memory Game on <span id="completion-date-en"></span><br>with <strong id="award-moves-en"></strong> moves and a time of <strong id="award-time-en"></strong> seconds.</span>
+                 </div>
+                 <img src="https://placehold.co/80x80/a1887f/ffffff?text=LOGO" alt="Logo" class="award-logo" id="award-logo" onerror="this.style.display='none'">
+                 <p class="save-the-date-text">
+                    <span class="lang-zh">MAS - 敬請期待 2222/02/02</span>
+                    <span class="lang-en">MAS - Save the date 2222/02/02</span>
+                 </p>
+            </div>
+
+            <div class="social-share-section">
+                <p class="social-share-text">
+                    <span class="lang-zh" id="share-text-zh">在社交媒體上分享</span>
+                    <span class="lang-en" id="share-text-en">Share on social media</span>
+                </p>
+                <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" class="social-icon-link" aria-label="Share on Instagram">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32px" height="32px">
+                        <defs>
+                            <linearGradient id="ig-grad" x1="0%" y1="100%" x2="100%" y2="0%">
+                                <stop offset="0%" style="stop-color:#FFD600;stop-opacity:1" />
+                                <stop offset="25%" style="stop-color:#FF7A00;stop-opacity:1" />
+                                <stop offset="50%" style="stop-color:#D300C5;stop-opacity:1" />
+                                <stop offset="75%" style="stop-color:#7638FA;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#448AFF;stop-opacity:1" />
+                            </linearGradient>
+                        </defs>
+                        <path fill="url(#ig-grad)" d="M 16 4 C 11.81 4 11.44 4.01 10.15 4.07 C 6.37 4.25 4.25 6.37 4.07 10.15 C 4.01 11.44 4 11.81 4 16 C 4 20.19 4.01 20.56 4.07 21.85 C 4.25 25.63 6.37 27.75 10.15 27.93 C 11.44 27.99 11.81 28 16 28 C 20.19 28 20.56 27.99 21.85 27.93 C 25.63 27.75 27.75 25.63 27.93 21.85 C 27.99 20.56 28 20.19 28 16 C 28 11.81 27.99 11.44 27.93 10.15 C 27.75 6.37 25.63 4.25 21.85 4.07 C 20.56 4.01 20.19 4 16 4 Z M 16 6 C 20.06 6 20.4 6.01 21.6 6.07 C 24.51 6.21 25.79 7.49 25.93 10.4 C 25.99 11.6 26 11.94 26 16 C 26 20.06 25.99 20.4 25.93 21.6 C 25.79 24.51 24.51 25.79 21.6 25.93 C 20.4 25.99 20.06 26 16 26 C 11.94 26 11.6 25.99 10.4 25.93 C 7.49 25.79 6.21 24.51 6.07 21.6 C 6.01 20.4 6 20.06 6 16 C 6 11.94 6.01 11.6 6.07 10.4 C 6.21 7.49 7.49 6.21 10.4 6.07 C 11.6 6.01 11.94 6 16 6 Z M 16 10 C 12.69 10 10 12.69 10 16 C 10 19.31 12.69 22 16 22 C 19.31 22 22 19.31 22 16 C 22 12.69 19.31 10 16 10 Z M 16 12 C 18.21 12 20 13.79 20 16 C 20 18.21 18.21 20 16 20 C 13.79 20 12 18.21 12 16 C 12 13.79 13.79 12 16 12 Z M 21.5 7.5 A 1.5 1.5 0 0 0 20 9 A 1.5 1.5 0 0 0 21.5 10.5 A 1.5 1.5 0 0 0 23 9 A 1.5 1.5 0 0 0 21.5 7.5 Z"/>
+                    </svg>
+                </a>
+            </div>
+             <button id="replay-button" class="game-button hidden" style="margin-top: 1rem;">
+                 <span class="lang-zh">再玩一次</span>
+                 <span class="lang-en">Play Again</span>
+             </button>
+
+         </div>
+
+    </div>
+
+    <script>
         // --- EmailJS Configuration ---
         const EMAILJS_SERVICE_ID = 'service_3qozdwc';
         const EMAILJS_TEMPLATE_ID = 'template_q69067c';
         const EMAILJS_PUBLIC_KEY = 'cDxOmMxePGWSWrLPG';
-    const images = [
-      'https://picsum.photos/100?1', 'https://picsum.photos/100?2', 'https://picsum.photos/100?3',
-      'https://picsum.photos/100?4', 'https://picsum.photos/100?5', 'https://picsum.photos/100?6',
-      'https://picsum.photos/100?7', 'https://picsum.photos/100?8', 'https://picsum.photos/100?9',
-      'https://picsum.photos/100?10'
-    ];
-    const backImage = 'https://yourdomain.com/your-logo.jpg';
-    let cards = [], firstCard = null, secondCard = null;
-    let matches = 0, score = 0, fails = 0;
-    let startTime;
 
-    function shuffle(array) {
-      for (let i = array.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]];
-      }
-    }
+        // --- Bilingual Text Content ---
+        const TEXT_CONTENT = {
+            emailSending: { zh: "正在發送結果...", en: "Sending results..." },
+            emailSuccess: { zh: "結果發送成功！", en: "Results sent successfully!" },
+            emailErrorConfig: { zh: "無法發送結果。請檢查配置。", en: "Failed to send results. Please check configuration." },
+            emailErrorTemplate: { zh: "無法發送結果。請檢查 EmailJS 模板參數。", en: "Failed to send results. Check EmailJS template parameters." },
+            emailErrorGeneric: { zh: "無法發送結果。請稍後再試。", en: "Failed to send results. Please try again later." },
+            emailNotConfigured: { zh: "電子郵件發送未配置。", en: "Email sending not configured." },
+            errorEnterDetails: { zh: "請輸入您的姓名和電子郵件。", en: "Please enter both your name and email." },
+            errorInvalidEmail: { zh: "請輸入有效的電子郵件地址。", en: "Please enter a valid email address." },
+            errorAlreadyPlayed: { zh: "此電子郵件似乎已完成遊戲。", en: "It looks like this email has already completed the game." },
+            shareText: { zh: "在社交媒體上分享", en: "Share on social media" }
+        };
 
-    function startGame() {
-      const name = document.getElementById('name').value.trim();
-      const email = document.getElementById('email').value.trim();
-      if (!name || !email) return alert("Please enter both name and email");
+        // --- Game Configuration ---
+        // ** NEW: Define the full pool of images **
+        const allCardImages = [
+            // Replace these with your actual image URLs from GitHub etc.
+            // Example using placeholders with unique numbers:
+            'https://placehold.co/100x100/f87171/ffffff?text=Img1', 'https://placehold.co/100x100/fb923c/ffffff?text=Img2',
+            'https://placehold.co/100x100/fbbf24/ffffff?text=Img3', 'https://placehold.co/100x100/a3e635/ffffff?text=Img4',
+            'https://placehold.co/100x100/4ade80/ffffff?text=Img5', 'https://placehold.co/100x100/34d399/ffffff?text=Img6',
+            'https://placehold.co/100x100/2dd4bf/ffffff?text=Img7', 'https://placehold.co/100x100/60a5fa/ffffff?text=Img8',
+            'https://placehold.co/100x100/818cf8/ffffff?text=Img9', 'https://placehold.co/100x100/c084fc/ffffff?text=Img10',
+            'https://placehold.co/100x100/f472b6/ffffff?text=Img11', 'https://placehold.co/100x100/ec4899/ffffff?text=Img12',
+            'https://placehold.co/100x100/d946ef/ffffff?text=Img13', 'https://placehold.co/100x100/a855f7/ffffff?text=Img14',
+            'https://placehold.co/100x100/8b5cf6/ffffff?text=Img15', 'https://placehold.co/100x100/6366f1/ffffff?text=Img16',
+            'https://placehold.co/100x100/3b82f6/ffffff?text=Img17', 'https://placehold.co/100x100/0ea5e9/ffffff?text=Img18',
+            'https://placehold.co/100x100/06b6d4/ffffff?text=Img19', 'https://placehold.co/100x100/14b8a6/ffffff?text=Img20',
+            // Add as many unique image URLs as you have (at least 10)
+        ];
+        const numberOfPairs = 10; // How many pairs to use in the game (e.g., 10 pairs = 20 cards)
+        const cardBackImage = 'https://placehold.co/80x80/a1887f/ffffff?text=LOGO';
+        const flipDelay = 800;
+        const matchFlipBackDelay = 500; // ** NEW: Delay before flipping 2nd matched card back **
+        const matchDisappearDelay = 300; // Delay after 2nd card flips back before fading
 
-      document.getElementById('user-form').style.display = 'none';
-      document.getElementById('game-end').style.display = 'none';
-      document.getElementById('game-board').style.display = 'grid';
+        // --- DOM Elements ---
+        // (DOM elements remain the same)
+        const welcomeScreen = document.getElementById('welcome-screen');
+        const startScreen = document.getElementById('start-screen');
+        const gameScreen = document.getElementById('game-screen');
+        const resultsScreen = document.getElementById('results-screen');
+        const continueButton = document.getElementById('continue-button');
+        const startGameButton = document.getElementById('start-game-button');
+        const replayButton = document.getElementById('replay-button');
+        const nicknameInput = document.getElementById('nickname');
+        const emailInput = document.getElementById('email');
+        const startError = document.getElementById('start-error');
+        const gameBoard = document.getElementById('game-board');
+        const movesCounter = document.getElementById('moves-counter');
+        const timerDisplay = document.getElementById('timer-display');
+        const emailStatusEl = document.getElementById('email-status');
+        const awardNicknameZh = document.getElementById('award-nickname-zh');
+        const awardNicknameEn = document.getElementById('award-nickname-en');
+        const completionDateZh = document.getElementById('completion-date-zh');
+        const completionDateEn = document.getElementById('completion-date-en');
+        const awardMovesZh = document.getElementById('award-moves-zh');
+        const awardMovesEn = document.getElementById('award-moves-en');
+        const awardTimeZh = document.getElementById('award-time-zh');
+        const awardTimeEn = document.getElementById('award-time-en');
+        const shareTextZh = document.getElementById('share-text-zh');
+        const shareTextEn = document.getElementById('share-text-en');
+        const awardLogo = document.getElementById('award-logo');
 
-      let doubleImages = [...images, ...images];
-      shuffle(doubleImages);
-      cards = doubleImages.map((src, idx) => ({ id: idx, src, matched: false }));
+        // --- Game State Variables ---
+        // (State variables remain the same)
+        let cards = [];
+        let firstCard = null;
+        let secondCard = null;
+        let lockBoard = false;
+        let matchesFound = 0;
+        let moves = 0;
+        let timerInterval = null;
+        let secondsElapsed = 0;
+        let userNickname = '';
+        let userEmail = '';
 
-      const board = document.getElementById('game-board');
-      board.innerHTML = '';
-      board.style.gridTemplateColumns = 'repeat(5, 1fr)';
-      board.style.gap = '8px';
+        // --- Functions ---
 
-      cards.forEach(card => {
-        const div = document.createElement('div');
-        div.className = 'card';
-        div.innerHTML = `<img src="${backImage}" data-id="${card.id}" class="card-img" style="width: 100px; height: 100px; cursor: pointer; border-radius: 0.5rem;">`;
-        board.appendChild(div);
-      });
-
-      board.querySelectorAll('img').forEach(img => img.addEventListener('click', onCardClick));
-      matches = 0;
-      score = 0;
-      fails = 0;
-      startTime = new Date();
-    }
-
-    function onCardClick(e) {
-      const id = parseInt(e.target.dataset.id);
-      const card = cards.find(c => c.id === id);
-      if (card.matched || e.target.classList.contains('flipped')) return;
-
-      e.target.src = card.src;
-      e.target.classList.add('flipped');
-
-      if (!firstCard) {
-        firstCard = { ...card, element: e.target };
-      } else if (!secondCard && firstCard.id !== card.id) {
-        secondCard = { ...card, element: e.target };
-
-        if (firstCard.src === secondCard.src) {
-          setTimeout(() => {
-            firstCard.element.style.visibility = 'hidden';
-            secondCard.element.style.visibility = 'hidden';
-            cards[firstCard.id].matched = true;
-            cards[secondCard.id].matched = true;
-            score++;
-            matches++;
-            resetSelection();
-            if (matches === images.length) endGame();
-          }, 250);
-        } else {
-          setTimeout(() => {
-            firstCard.element.src = backImage;
-            secondCard.element.src = backImage;
-            firstCard.element.classList.remove('flipped');
-            secondCard.element.classList.remove('flipped');
-            fails++;
-            score -= 2;
-            resetSelection();
-          }, 400);
+        function shuffle(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
         }
-      }
-    }
 
-    function resetSelection() {
-      firstCard = null;
-      secondCard = null;
-    }
+        // ** NEW: Function to select random images **
+        function selectRandomImages(pool, count) {
+            const shuffledPool = shuffle([...pool]); // Shuffle a copy of the pool
+            return shuffledPool.slice(0, count); // Take the first 'count' images
+        }
 
-function endGame() {
-      const duration = Math.round((new Date() - startTime) / 1000);
-      document.getElementById('game-board').style.display = 'none';
-      const name = document.getElementById('name').value;
-      const email = document.getElementById('email').value;
-      document.getElementById('game-end').innerHTML = `
-        <div class="award-certificate">
-          <div class="award-title">Certificate of Memory Mastery</div>
-          <div class="award-text">Congratulations ${name} 💖<br>You completed the game with a score of ${score}<br>in ${duration} seconds!</div>
-          <div class="save-the-date-text">Save this date in your heart 💌</div>
-          <button class="game-button" onclick="replayGame()">🔁 Play Again</button>
-        </div>
-      `;
-      document.getElementById('game-end').style.display = 'block';
 
-      // EmailJS
-      emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
-        nickname: name,
-        email: email,
-        score: score,
-        time: duration
-      }, EMAILJS_PUBLIC_KEY);
-    }
+        function startTimer() {
+            stopTimer();
+            secondsElapsed = 0;
+            timerDisplay.innerHTML = `<span class="lang-zh">時間:</span><span class="lang-en">Time:</span> ${secondsElapsed}s`;
+            const startTime = Date.now();
+            timerInterval = setInterval(() => {
+                secondsElapsed = Math.floor((Date.now() - startTime) / 1000);
+                timerDisplay.innerHTML = `<span class="lang-zh">時間:</span><span class="lang-en">Time:</span> ${secondsElapsed}s`;
+            }, 1000);
+        }
 
-    function replayGame() {
-      document.getElementById('game-end').style.display = 'none';
-      startGame(); // reshuffle and restart
-    }
+        function stopTimer() {
+            clearInterval(timerInterval);
+            timerInterval = null;
+        }
 
-    (function() {
-      emailjs.init(EMAILJS_PUBLIC_KEY);
-    })();
-  </script>
+        function updateMoves() {
+            movesCounter.innerHTML = `<span class="lang-zh">步數:</span><span class="lang-en">Moves:</span> ${moves}`;
+        }
+
+        function createGameBoard() {
+            // ** NEW: Select random images for this game round **
+            const selectedImages = selectRandomImages(allCardImages, numberOfPairs);
+            const gameImages = shuffle([...selectedImages, ...selectedImages]); // Duplicate and shuffle the selected pairs
+
+            gameBoard.innerHTML = '';
+            cards = [];
+            matchesFound = 0;
+            moves = 0;
+            updateMoves();
+
+            gameImages.forEach((imageValue, index) => {
+                const cardElement = document.createElement('div');
+                cardElement.classList.add('card');
+                cardElement.dataset.id = index;
+                cardElement.dataset.value = imageValue;
+
+                cardElement.innerHTML = `
+                    <div class="card-face card-face--back">
+                        <img src="${cardBackImage}" alt="Card Back">
+                    </div>
+                    <div class="card-face card-face--front">
+                        <img src="${imageValue}" alt="Card Face ${index}">
+                    </div>
+                `;
+
+                cardElement.addEventListener('click', handleCardClick);
+                gameBoard.appendChild(cardElement);
+                cards.push({
+                    id: index,
+                    value: imageValue,
+                    element: cardElement,
+                    matched: false
+                });
+            });
+        }
+
+        function handleCardClick(event) {
+            if (lockBoard) return;
+            const clickedCardElement = event.currentTarget;
+            const clickedCardData = cards.find(card => card.id === parseInt(clickedCardElement.dataset.id));
+
+            if (clickedCardData.matched || clickedCardElement === firstCard?.element) return;
+
+            flipCard(clickedCardElement);
+
+            if (!firstCard) {
+                firstCard = clickedCardData;
+                return;
+            }
+
+            secondCard = clickedCardData;
+            lockBoard = true;
+            moves++;
+            updateMoves();
+            checkForMatch();
+        }
+
+        function flipCard(cardElement) {
+            cardElement.classList.add('is-flipped');
+        }
+
+        function unflipCard(cardElement) {
+            cardElement.classList.remove('is-flipped');
+        }
+
+        function checkForMatch() {
+            const isMatch = firstCard.value === secondCard.value;
+            isMatch ? handleMatch() : handleMismatch();
+        }
+
+        function handleMatch() {
+            firstCard.matched = true;
+            secondCard.matched = true;
+            matchesFound++;
+
+            lockBoard = true; // Keep board locked
+
+            // ** UPDATED Animation Timing **
+            setTimeout(() => { // Wait longer before flipping second card back
+                unflipCard(secondCard.element);
+
+                setTimeout(() => { // Wait after flip-back before fading
+                    firstCard.element.classList.add('is-removing');
+                    secondCard.element.classList.add('is-removing');
+
+                    resetBoard(); // Reset selections, unlock board AFTER fade starts
+
+                    if (matchesFound === numberOfPairs) { // Check against number of pairs
+                        stopTimer();
+                        setTimeout(endGame, 500);
+                    }
+                }, matchDisappearDelay);
+
+            }, matchFlipBackDelay); // Use the new delay here
+        }
+
+
+        function handleMismatch() {
+            setTimeout(() => {
+                unflipCard(firstCard.element);
+                unflipCard(secondCard.element);
+                resetBoard();
+            }, flipDelay);
+        }
+
+
+        function resetBoard() {
+            [firstCard, secondCard] = [null, null];
+            lockBoard = false;
+        }
+
+        function setEmailStatus(statusKey) {
+             const status = TEXT_CONTENT[statusKey];
+             let className = 'email-sending';
+             if (statusKey === 'emailSuccess') className = 'email-success';
+             if (statusKey.startsWith('emailError') || statusKey === 'emailNotConfigured') className = 'email-error';
+
+             emailStatusEl.innerHTML = `<span class="lang-zh">${status.zh}</span><span class="lang-en">${status.en}</span>`;
+             emailStatusEl.className = className;
+         }
+
+        function sendResultsEmail() {
+            if (!EMAILJS_SERVICE_ID || EMAILJS_SERVICE_ID === 'YOUR_SERVICE_ID' ||
+                !EMAILJS_TEMPLATE_ID || EMAILJS_TEMPLATE_ID === 'YOUR_TEMPLATE_ID' ||
+                !EMAILJS_PUBLIC_KEY || EMAILJS_PUBLIC_KEY === 'YOUR_PUBLIC_KEY') {
+                console.warn("EmailJS credentials are placeholders. Skipping email send.");
+                setEmailStatus('emailNotConfigured');
+                return;
+            }
+
+            setEmailStatus('emailSending');
+            const templateParams = {
+                nickname: userNickname,
+                email: userEmail,
+                score: moves,
+                time: secondsElapsed,
+                game_type: 'Memory Game'
+            };
+
+            emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams, EMAILJS_PUBLIC_KEY)
+                .then((response) => {
+                   console.log('EmailJS SUCCESS!', response.status, response.text);
+                   setEmailStatus('emailSuccess');
+                }, (error) => {
+                   console.error('EmailJS FAILED...', error);
+                   let errorKey = 'emailErrorGeneric';
+                   if (error.status === 400) errorKey = 'emailErrorTemplate';
+                   else if (error.status !== 0) errorKey = 'emailErrorConfig';
+                   setEmailStatus(errorKey);
+                });
+        }
+
+        function endGame() {
+            gameScreen.classList.add('hidden');
+            resultsScreen.classList.remove('hidden');
+            replayButton.classList.remove('hidden');
+
+            const today = new Date();
+            const dateZh = today.toLocaleDateString('zh-TW');
+            const dateEn = today.toLocaleDateString('en-US');
+            const awardMovesText = moves;
+            const awardTimeText = secondsElapsed;
+
+            awardNicknameZh.textContent = userNickname;
+            awardNicknameEn.textContent = userNickname;
+            completionDateZh.textContent = dateZh;
+            completionDateEn.textContent = dateEn;
+            awardMovesZh.textContent = awardMovesText;
+            awardMovesEn.textContent = awardMovesText;
+            awardTimeZh.textContent = awardTimeText;
+            awardTimeEn.textContent = awardTimeText;
+
+            shareTextZh.textContent = TEXT_CONTENT.shareText.zh;
+            shareTextEn.textContent = TEXT_CONTENT.shareText.en;
+
+            awardLogo.src = cardBackImage;
+
+            sendResultsEmail();
+
+             try {
+                localStorage.setItem('memoryGamePlayed_' + userEmail.toLowerCase(), 'true');
+             } catch (e) {
+                console.warn("LocalStorage not available or failed to write.");
+             }
+        }
+
+        // --- Screen Transitions & Game Initialization ---
+
+        function showStartScreen() {
+            welcomeScreen.classList.add('hidden');
+            startScreen.classList.remove('hidden');
+            gameScreen.classList.add('hidden');
+            resultsScreen.classList.add('hidden');
+            replayButton.classList.add('hidden');
+        }
+
+        function setupAndStartGame() {
+            startScreen.classList.add('hidden');
+            resultsScreen.classList.add('hidden');
+            gameScreen.classList.remove('hidden');
+            replayButton.classList.add('hidden');
+
+            createGameBoard();
+            startTimer();
+            resetBoard();
+        }
+
+        function validateAndInitGame() {
+            userNickname = nicknameInput.value.trim();
+            userEmail = emailInput.value.trim();
+            startError.innerHTML = '';
+
+            if (!userNickname || !userEmail) {
+                startError.innerHTML = `<span class="lang-zh">${TEXT_CONTENT.errorEnterDetails.zh}</span><span class="lang-en">${TEXT_CONTENT.errorEnterDetails.en}</span>`;
+                return;
+            }
+            if (!/\S+@\S+\.\S+/.test(userEmail)) {
+                 startError.innerHTML = `<span class="lang-zh">${TEXT_CONTENT.errorInvalidEmail.zh}</span><span class="lang-en">${TEXT_CONTENT.errorInvalidEmail.en}</span>`;
+                 return;
+            }
+
+            let alreadyPlayed = false;
+            try {
+                alreadyPlayed = localStorage.getItem('memoryGamePlayed_' + userEmail.toLowerCase()) === 'true';
+            } catch (e) {
+                 console.warn("LocalStorage not available or failed to read.");
+            }
+            if (alreadyPlayed) {
+                 startError.innerHTML = `<span class="lang-zh">${TEXT_CONTENT.errorAlreadyPlayed.zh}</span><span class="lang-en">${TEXT_CONTENT.errorAlreadyPlayed.en}</span>`;
+                 return;
+            }
+
+            setupAndStartGame();
+        }
+
+        function replayGame() {
+             // Directly setup and start the game using stored user info
+             if (userNickname && userEmail) { // Check if user info exists
+                 setupAndStartGame();
+             } else {
+                 // Fallback: If user info somehow got lost, go back to start screen
+                 showStartScreen();
+             }
+        }
+
+
+        // --- Event Listeners ---
+        continueButton.addEventListener('click', showStartScreen);
+        startGameButton.addEventListener('click', validateAndInitGame);
+        replayButton.addEventListener('click', replayGame);
+
+        // --- Initial Display ---
+        welcomeScreen.classList.remove('hidden');
+        startScreen.classList.add('hidden');
+        gameScreen.classList.add('hidden');
+        resultsScreen.classList.add('hidden');
+        replayButton.classList.add('hidden');
+
+        // Initialize EmailJS (optional)
+        // if (EMAILJS_PUBLIC_KEY && EMAILJS_PUBLIC_KEY !== 'YOUR_PUBLIC_KEY') {
+        //     emailjs.init(EMAILJS_PUBLIC_KEY);
+        // }
+
+    </script>
 </body>
 </html>
