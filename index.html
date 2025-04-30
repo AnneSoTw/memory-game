@@ -182,7 +182,7 @@
         <div id="welcome-screen">
              <h1 class="text-4xl font-bold mb-6 romantic-font">
                 <span class="lang-zh">歡迎來玩記憶遊戲！</span>
-                <span class="lang-en">Welcome to the Memory Game!</span>
+                <span class="lang-en">Welcome to the Memory Game! A</span>
             </h1>
             <p class="mb-5 text-gray-600" style="line-height: 1.6;">
                 <span class="lang-zh">遊戲規則：<br>1. 輸入您的姓名和電子郵件。<br>2. 點擊卡片，找出所有配對！<br>3. 完成後查看您的步數和時間。<br>4. 結果將自動發送給我們。</span>
@@ -247,8 +247,8 @@
                  </div>
                  <img src="https://placehold.co/80x80/a1887f/ffffff?text=LOGO" alt="Logo" class="award-logo" id="award-logo" onerror="this.style.display='none'">
                  <p class="save-the-date-text">
-                    <span class="lang-zh">MAS - 敬請期待 2222/02/02</span>
-                    <span class="lang-en">MAS - Save the date 2222/02/02</span>
+                    <span class="lang-zh">AS to Baby</span>
+                    <span class="lang-en">AS - to You</span>
                  </p>
             </div>
 
@@ -302,22 +302,8 @@
         };
 
         // --- Game Configuration ---
-        // ** NEW: Define the full pool of images **
-        const allCardImages = [
-            // Replace these with your actual image URLs from GitHub etc.
-            // Example using placeholders with unique numbers:
-            'https://placehold.co/100x100/f87171/ffffff?text=Img1', 'https://placehold.co/100x100/fb923c/ffffff?text=Img2',
-            'https://placehold.co/100x100/fbbf24/ffffff?text=Img3', 'https://placehold.co/100x100/a3e635/ffffff?text=Img4',
-            'https://placehold.co/100x100/4ade80/ffffff?text=Img5', 'https://placehold.co/100x100/34d399/ffffff?text=Img6',
-            'https://placehold.co/100x100/2dd4bf/ffffff?text=Img7', 'https://placehold.co/100x100/60a5fa/ffffff?text=Img8',
-            'https://placehold.co/100x100/818cf8/ffffff?text=Img9', 'https://placehold.co/100x100/c084fc/ffffff?text=Img10',
-            'https://placehold.co/100x100/f472b6/ffffff?text=Img11', 'https://placehold.co/100x100/ec4899/ffffff?text=Img12',
-            'https://placehold.co/100x100/d946ef/ffffff?text=Img13', 'https://placehold.co/100x100/a855f7/ffffff?text=Img14',
-            'https://placehold.co/100x100/8b5cf6/ffffff?text=Img15', 'https://placehold.co/100x100/6366f1/ffffff?text=Img16',
-            'https://placehold.co/100x100/3b82f6/ffffff?text=Img17', 'https://placehold.co/100x100/0ea5e9/ffffff?text=Img18',
-            'https://placehold.co/100x100/06b6d4/ffffff?text=Img19', 'https://placehold.co/100x100/14b8a6/ffffff?text=Img20',
-            // Add as many unique image URLs as you have (at least 10)
-        ];
+        const MANIFEST_URL = 'https://raw.githubusercontent.com/AnneSoTw/memory-game/refs/heads/main/photo.json';
+
         const numberOfPairs = 10; // How many pairs to use in the game (e.g., 10 pairs = 20 cards)
         const cardBackImage = 'https://placehold.co/80x80/a1887f/ffffff?text=LOGO';
         const flipDelay = 800;
@@ -364,9 +350,57 @@
         let secondsElapsed = 0;
         let userNickname = '';
         let userEmail = '';
+        let allCardImages = []; // Now holds ALL pictures fetched from the manifests
 
         // --- Functions ---
+        async function fetchPhotoManifests(manifestUrl) 
+        {
+            try 
+            {
+                console.log("Fetching photo manifests...");
+                // Show loading indicator while fetching
+                startError.innerHTML = `<span class="lang-zh">${TEXT_CONTENT.loadingPhotos.zh}</span><span class="lang-en">${TEXT_CONTENT.loadingPhotos.en}</span>`;
+                startError.classList.remove('text-red-600'); // Remove error styling
+                startError.classList.add('text-gray-600'); // Add neutral styling
 
+                // Fetch both manifests in parallel
+                const [response] = await Promise.all([
+                    fetch(manifestUrl)
+                ]);
+
+                // Check response status explicitly
+                if (!response.ok)
+                {
+                    console.error(`Failed to fetch manifest: HTTP status ${response.status} ${response.statusText}`);
+                    throw new Error(`HTTP error fetching manifest! status: ${response.status}`);
+                }
+
+                try 
+                {
+                    allCardImages = await response.json(); // Expecting full URLs
+                    console.log("manifest parsed:", allCardImages);
+                } 
+                catch (jsonError)
+                {
+                    console.error("Failed to parse manifest JSON:", jsonError);
+                    throw new Error("Failed to parse manifest JSON.");
+                }
+                console.log("Combined pictures:", allCardImages);
+
+                startError.innerHTML = ''; // Clear loading message
+                startError.classList.remove('text-gray-600'); // Remove neutral styling
+
+            } catch (error) {
+                console.error("Error fetching photo manifests:", error);
+                allCardImages = []; // Clear pictures on error
+                startError.innerHTML = `<span class="lang-zh">${TEXT_CONTENT.loadingPhotosError.zh}</span><span class="lang-en">${TEXT_CONTENT.loadingPhotosError.en}</span>`;
+                startError.classList.remove('text-gray-600'); // Remove neutral styling
+                startError.classList.add('text-red-600'); // Add error styling
+                // Disable start button if photos couldn't load
+                startGameButton.disabled = true;
+
+            }
+        }
         function shuffle(array) {
             for (let i = array.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
@@ -404,6 +438,16 @@
 
         function createGameBoard() {
             // ** NEW: Select random images for this game round **
+            if (allCardImages.length === 0) 
+            {
+                // Call fetchPhotoManifests without base URLs
+                await fetchPhotoManifests(MANIFEST_URL);
+                if (allCardImages.length === 0) {
+                     console.error("No pictures available after fetching manifests.");
+                     // Error message is already set by fetchPhotoManifests
+                     return; // Stop game setup if no pictures loaded
+                }
+            }
             const selectedImages = selectRandomImages(allCardImages, numberOfPairs);
             const gameImages = shuffle([...selectedImages, ...selectedImages]); // Duplicate and shuffle the selected pairs
 
@@ -660,6 +704,7 @@
         gameScreen.classList.add('hidden');
         resultsScreen.classList.add('hidden');
         replayButton.classList.add('hidden');
+        fetchPhotoManifests(MANIFEST_URL); // Removed base URLs
 
         // Initialize EmailJS (optional)
         // if (EMAILJS_PUBLIC_KEY && EMAILJS_PUBLIC_KEY !== 'YOUR_PUBLIC_KEY') {
