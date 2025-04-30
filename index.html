@@ -8,8 +8,9 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Merriweather:wght@400;700&family=Noto+Sans+TC:wght@400;700&display=swap" rel="stylesheet">
-    <script type="text/javascript"
-        src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    
     <style>
         /* --- Inherited Bilingual Wedding Theme Styles (Adapted) --- */
         body {
@@ -174,6 +175,82 @@
          .email-error { color: #c62828; }
          .email-sending { color: #6d4c41; }
 
+        * Style for the temporary share canvas wrapper */
+        .share-canvas-wrapper {
+            position: absolute;
+            left: -9999px; /* Position off-screen */
+            top: -9999px;
+            width: 540px; /* Example width for 9:16 aspect ratio */
+            height: 960px; /* Example height for 9:16 aspect ratio */
+            display: flex; /* Use flexbox to center content */
+            flex-direction: column; /* Stack children vertically */
+            justify-content: center; /* Center content vertically */
+            align-items: center; /* Center content horizontally */
+            background-color: #fffaf0; /* Match certificate background */
+            padding: 40px; /* Add some padding */
+            box-sizing: border-box;
+            overflow: hidden; /* Hide any overflow */
+        }
+         .share-canvas-wrapper .award-certificate {
+             border: 8px double #c09b2d; /* Keep the border for the captured version */
+             box-shadow: none; /* Remove shadow for the captured version */
+             padding: 2rem; /* Keep padding inside the certificate content */
+             width: 100%; /* Make cloned content fill the wrapper */
+             height: auto; /* Allow height to adjust */
+             max-width: 100%;
+             margin: 0; /* Remove margin */
+             display: flex;
+             flex-direction: column;
+             justify-content: space-between;
+             align-items: center;
+             text-align: center; /* Ensure text is centered */
+             box-sizing: border-box; /* Include padding in width/height */
+         }
+         /* Adjust font sizes within the cloned certificate for the smaller format */
+         .share-canvas-wrapper .award-title {
+             font-size: 2rem; /* Smaller title */
+             margin-bottom: 1.2rem; /* Adjusted margin */
+         }
+         .share-canvas-wrapper .award-text {
+             font-size: 1rem; /* Smaller body text */
+             line-height: 1.6; /* Adjust line height */
+             margin-bottom: 1.5rem; /* Added margin below main text */
+         }
+         .share-canvas-wrapper .award-text strong {
+             font-size: 1rem; /* Adjust strong text size */
+         }
+          /* Container for logo and save the date */
+         .share-canvas-wrapper .bottom-section {
+             display: flex;
+             justify-content: space-between; /* Space out items */
+             align-items: flex-end; /* Align items to the bottom */
+             width: 100%; /* Take full width */
+             margin-top: auto; /* Push this section to the bottom */
+             padding: 0 1rem; /* Add horizontal padding */
+             box-sizing: border-box;
+         }
+
+         .share-canvas-wrapper .award-logo {
+             width: 70px; /* Adjusted logo size */
+             height: 70px;
+             margin: 0; /* Remove default margin */
+             order: 2; /* Place logo on the right */
+             opacity: 0.8; /* Subtle stamp effect */
+             filter: grayscale(50%); /* Subtle grayscale */
+             /* transform: rotate(5deg); /* Optional: slight rotation for stamp feel */
+         }
+         .share-canvas-wrapper .save-the-date-text {
+             font-size: 0.8rem; /* Adjusted save the date text size */
+             color: #795548; /* Match body text color */
+             font-weight: normal; /* Less bold */
+             line-height: 1.3;
+             margin: 0; /* Remove default margin */
+             text-align: left; /* Align text to the left */
+             order: 1; /* Place text on the left */
+             flex-grow: 1; /* Allow text to take available space */
+             padding-right: 1rem; /* Space between text and logo */
+         }
+
     </style>
 </head>
 <body>
@@ -182,7 +259,7 @@
         <div id="welcome-screen">
              <h1 class="text-4xl font-bold mb-6 romantic-font">
                 <span class="lang-zh">歡迎來玩記憶遊戲！</span>
-                <span class="lang-en">Welcome to the Memory Game! C</span>
+                <span class="lang-en">Welcome to the Memory Game!</span>
             </h1>
             <p class="mb-5 text-gray-600" style="line-height: 1.6;">
                 <span class="lang-zh">遊戲規則：<br>1. 輸入您的姓名和電子郵件。<br>2. 點擊卡片，找出所有配對！<br>3. 完成後查看您的步數和時間。<br>4. 結果將自動發送給我們。</span>
@@ -257,8 +334,8 @@
                     <span class="lang-zh" id="share-text-zh">在社交媒體上分享</span>
                     <span class="lang-en" id="share-text-en">Share on social media</span>
                 </p>
-                <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" class="social-icon-link" aria-label="Share on Instagram">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32px" height="32px">
+                <a href="#" id="instagram-share-link" rel="noopener noreferrer" class="social-icon-link" aria-label="Share on Instagram">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="36px" height="36px">
                         <defs>
                             <linearGradient id="ig-grad" x1="0%" y1="100%" x2="100%" y2="0%">
                                 <stop offset="0%" style="stop-color:#FFD600;stop-opacity:1" />
@@ -343,6 +420,8 @@
         const shareTextZh = document.getElementById('share-text-zh');
         const shareTextEn = document.getElementById('share-text-en');
         const awardLogo = document.getElementById('award-logo');
+        const instagramShareLink = document.getElementById('instagram-share-link');
+        const awardCertificateElement = document.querySelector('.award-certificate');
 
         // --- Game State Variables ---
         // (State variables remain the same)
@@ -697,26 +776,118 @@
                  showStartScreen();
              }
         }
+        
+        async function shareCertificate()
+        {
+            console.log("Attempting to share certificate...");
+            if (!awardCertificateElement) {
+                console.error("Award certificate element not found.");
+                alert(TEXT_CONTENT.shareFailed.zh + '\n' + TEXT_CONTENT.shareFailed.en); // Basic fallback alert
+                return;
+            }
 
+            let tempWrapper = null; 
+            try {
+                // Clone the certificate element to avoid modifying the visible DOM
+                const certificateClone = awardCertificateElement.cloneNode(true);
+                // Create a temporary wrapper for the desired aspect ratio
+                tempWrapper = document.createElement('div');
+                tempWrapper.classList.add('share-canvas-wrapper'); // Use the CSS class for styling
+             
+                // Find the original logo and save-the-date elements in the clone
+                const clonedLogo = certificateClone.querySelector('.award-logo');
+                const clonedSaveTheDate = certificateClone.querySelector('.save-the-date-text');
+                // Create a new container for the bottom section (logo and save the date)
+                const bottomSection = document.createElement('div');
+                bottomSection.classList.add('bottom-section'); // Use the CSS class for styling
+
+               if (clonedSaveTheDate && clonedSaveTheDate.parentNode) {
+                     clonedSaveTheDate.parentNode.removeChild(clonedSaveTheDate); // Remove from original position
+                     bottomSection.appendChild(clonedSaveTheDate); // Add to new container
+                }
+                 if (clonedLogo && clonedLogo.parentNode) {
+                     clonedLogo.parentNode.removeChild(clonedLogo); // Remove from original position
+                     bottomSection.appendChild(clonedLogo); // Add to new container
+                 }
+
+                // Append the new bottom section container to the cloned certificate
+                certificateClone.appendChild(bottomSection);
+
+                // Append the cloned certificate to the temporary wrapper
+                tempWrapper.appendChild(certificateClone);
+
+                // Append the temporary wrapper to the body (off-screen)
+                document.body.appendChild(tempWrapper);
+                
+                // Use html2canvas to capture the certificate element
+                const canvas = await html2canvas(tempWrapper, {
+                    scale: 3, // Improve resolution on high-DPI screens
+                    logging: true, // Enable logging for debugging html2canvas
+                    useCORS: true // Attempt to use CORS for images if any
+                });
+                console.log("Certificate rendered to canvas.");
+
+                // Convert canvas to Blob
+                canvas.toBlob(async (blob) => {
+                    if (!blob) {
+                        console.error("Failed to create blob from canvas.");
+                         alert(TEXT_CONTENT.shareFailed.zh + '\n' + TEXT_CONTENT.shareFailed.en); // Basic fallback alert
+                        return;
+                    }
+
+                    const file = new File([blob], 'match_game_certificate.png', { type: 'image/png' });
+                    console.log("Blob converted to File:", file);
+
+                    if (navigator.canShare && navigator.canShare({ files: [file] })) {
+                        try {
+                            console.log("Web Share API supported. Sharing...");
+                            await navigator.share({
+                                files: [file],
+                                title: 'Our Matchmaking Game Certificate!',
+                            });
+                            console.log("Certificate shared successfully.");
+                        } catch (shareError) {
+                            console.error("Web Share failed:", shareError);
+                             if (shareError.name !== 'AbortError') {
+                                alert(TEXT_CONTENT.shareFailed.zh + '\n' + TEXT_CONTENT.shareFailed.en);
+                             }
+                        }
+                    } else {
+                        console.warn("Web Share API Level 2 not supported or cannot share files.");
+                        // Fallback: Alert user or provide download link
+                        alert(TEXT_CONTENT.shareUnsupported.zh + '\n' + TEXT_CONTENT.shareUnsupported.en);
+                    }
+                }, 'image/png');
+
+            } catch (html2canvasError) {
+                console.error("Error rendering certificate with html2canvas:", html2canvasError);
+                 alert(TEXT_CONTENT.shareFailed.zh + '\n' + TEXT_CONTENT.shareFailed.en); // Basic fallback alert
+            } finally {
+                 // Always remove the temporary wrapper from the DOM
+                 if (tempWrapper && tempWrapper.parentNode) {
+                    tempWrapper.parentNode.removeChild(tempWrapper);
+                    console.log("Temporary share wrapper removed.");
+                 }
+            }
+        }
 
         // --- Event Listeners ---
         continueButton.addEventListener('click', showStartScreen);
         startGameButton.addEventListener('click', validateAndInitGame);
         replayButton.addEventListener('click', replayGame);
-
+        instagramShareLink.addEventListener('click', (e) => 
+        {
+            e.preventDefault();
+            shareCertificate();
+        });
+        
         // --- Initial Display ---
         welcomeScreen.classList.remove('hidden');
         startScreen.classList.add('hidden');
         gameScreen.classList.add('hidden');
         resultsScreen.classList.add('hidden');
         replayButton.classList.add('hidden');
-        fetchPhotoManifests(MANIFEST_URL); // Removed base URLs
-
-        // Initialize EmailJS (optional)
-        // if (EMAILJS_PUBLIC_KEY && EMAILJS_PUBLIC_KEY !== 'YOUR_PUBLIC_KEY') {
-        //     emailjs.init(EMAILJS_PUBLIC_KEY);
-        // }
-
+        fetchPhotoManifests(MANIFEST_URL);
     </script>
 </body>
 </html>
