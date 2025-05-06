@@ -231,39 +231,36 @@
              font-size: 1rem; /* Adjust strong text size */
          }
           /* Container for logo and save the date */
-         .share-canvas-wrapper .bottom-section {
-             display: flex;
-             justify-content: space-between; /* Space out items */
-             align-items: flex-end; /* Align items to the bottom */
-             width: 100%; /* Take full width */
-             margin-top: auto; /* Push this section to the bottom */
-             padding: 0 1rem; /* Add horizontal padding */
-             box-sizing: border-box;
-         }
-
-         .share-canvas-wrapper .award-logo {
-             position: absolute; /* Position absolutely within the certificate clone */
-             bottom: 2rem; /* Distance from the bottom */
-             right: 2rem; /* Distance from the right */
-             width: 80px; /* Consistent logo size */
-             height: 80px;
-             margin: 0; /* Remove default margin */
-             opacity: 0.8; /* Subtle stamp effect */
-             filter: grayscale(50%); /* Subtle grayscale */
-             /* transform: rotate(5deg); /* Optional: slight rotation for stamp feel */
-         }
-         .share-canvas-wrapper .save-the-date-text {
-             position: absolute; /* Position absolutely within the certificate clone */
-             bottom: 2rem; /* Align with the logo bottom */
-             left: 2rem; /* Distance from the left */
-             font-size: 0.9rem; /* Consistent save the date text size */
-             color: #795548; /* Match body text color */
-             font-weight: normal; /* Less bold */
-             line-height: 1.3;
-             margin: 0; /* Remove default margin */
-             text-align: left; /* Align text to the left */
-             max-width: calc(100% - 4rem - 80px - 1rem); /* Max width considering padding, logo width, and space */
-         }
+        .share-canvas-wrapper .bottom-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            width: 100%;
+            margin-top: auto; /* Push this section to the bottom */
+            padding: 0 1rem; /* Add horizontal padding */
+            box-sizing: border-box;
+        }
+        
+        .share-canvas-wrapper .award-logo {
+            width: 70px; /* Adjusted logo size from bug.html */
+            height: 70px;
+            margin: 0; /* Remove default margin */
+            order: 2; /* Place logo on the right */
+            opacity: 0.8; /* Subtle stamp effect */
+            filter: grayscale(50%); /* Subtle grayscale */
+        }
+        
+        .share-canvas-wrapper .save-the-date-text {
+            font-size: 0.8rem; /* Adjusted save the date text size from bug.html */
+            color: #795548; /* Match body text color */
+            font-weight: normal; /* Less bold */
+            line-height: 1.3;
+            margin: 0; /* Remove default margin */
+            text-align: left; /* Align text to the left */
+            order: 1; /* Place text on the left */
+            flex-grow: 1; /* Allow text to take available space */
+            padding-right: 1rem; /* Space between text and logo */
+        }
 
     </style>
 </head>
@@ -273,7 +270,7 @@
         <div id="welcome-screen">
              <h1 class="text-4xl font-bold mb-6 romantic-font">
                 <span class="lang-zh">歡迎來玩記憶遊戲！</span>
-                <span class="lang-en">Welcome to the Memory Game! A</span>
+                <span class="lang-en">Welcome to the Memory Game! B</span>
             </h1>
             <p class="mb-5 text-gray-600" style="line-height: 1.6;">
                 <span class="lang-zh">遊戲規則：<br>1. 輸入您的姓名和電子郵件。<br>2. 點擊卡片，找出所有配對！<br>3. 完成後查看您的步數和時間。<br>4. 結果將自動發送給我們。</span>
