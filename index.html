@@ -185,81 +185,91 @@
          .email-error { color: #c62828; }
          .email-sending { color: #6d4c41; }
 
-        * Style for the temporary share canvas wrapper */
-        .share-canvas-wrapper {
-            position: absolute;
-            left: -9999px; /* Position off-screen */
-            top: -9999px;
-            width: 540px; /* Example width for 9:16 aspect ratio */
-            height: 960px; /* Example height for 9:16 aspect ratio */
-            display: flex; /* Use flexbox to center content */
-            flex-direction: column; /* Stack children vertically */
-            justify-content: center; /* Center content vertically */
-            align-items: center; /* Center content horizontally */
-            background-color: #fffaf0; /* Match certificate background */
-            padding: 40px; /* Add some padding */
-            box-sizing: border-box;
-            overflow: hidden; /* Hide any overflow */
-        }
-         .share-canvas-wrapper .award-certificate {
-             border: 8px double #c09b2d; /* Keep the border for the captured version */
-             box-shadow: none; /* Remove shadow for the captured version */
-             padding: 2rem; /* Keep padding inside the certificate content */
-             width: 100%; /* Make cloned content fill the wrapper */
-             height: auto; /* Allow height to adjust */
-             max-width: 100%;
-             margin: 0; /* Remove margin */
-             display: flex;
-             flex-direction: column;
-             justify-content: space-between;
-             align-items: center;
-             text-align: center; /* Ensure text is centered */
-             box-sizing: border-box; /* Include padding in width/height */
-         }
-         /* Adjust font sizes within the cloned certificate for the smaller format */
-         .share-canvas-wrapper .award-title {
-             font-size: 2rem; /* Smaller title */
-             margin-bottom: 1.2rem; /* Adjusted margin */
-         }
-         .share-canvas-wrapper .award-text {
-             font-size: 1rem; /* Smaller body text */
-             line-height: 1.6; /* Adjust line height */
-             margin-bottom: 1.5rem; /* Added margin below main text */
-         }
-         .share-canvas-wrapper .award-text strong {
-             font-size: 1rem; /* Adjust strong text size */
-         }
-          /* Container for logo and save the date */
-        .share-canvas-wrapper .bottom-section {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-end;
-            width: 100%;
-            margin-top: auto; /* Push this section to the bottom */
-            padding: 0 1rem; /* Add horizontal padding */
-            box-sizing: border-box;
-        }
-        
-        .share-canvas-wrapper .award-logo {
-            width: 70px; /* Adjusted logo size from bug.html */
-            height: 70px;
-            margin: 0; /* Remove default margin */
-            order: 2; /* Place logo on the right */
-            opacity: 0.8; /* Subtle stamp effect */
-            filter: grayscale(50%); /* Subtle grayscale */
-        }
-        
-        .share-canvas-wrapper .save-the-date-text {
-            font-size: 0.8rem; /* Adjusted save the date text size from bug.html */
-            color: #795548; /* Match body text color */
-            font-weight: normal; /* Less bold */
-            line-height: 1.3;
-            margin: 0; /* Remove default margin */
-            text-align: left; /* Align text to the left */
-            order: 1; /* Place text on the left */
-            flex-grow: 1; /* Allow text to take available space */
-            padding-right: 1rem; /* Space between text and logo */
-        }
+       /* === Styles for the Share Canvas in memo.html === */
+
+.share-canvas-wrapper {
+    position: absolute;
+    left: -9999px; /* Position off-screen */
+    top: -9999px;
+    width: 540px;   /* Instagram story width */
+    height: 960px;  /* Instagram story height */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #fffaf0; /* Match certificate background */
+    padding: 40px;             /* Overall padding for the canvas */
+    box-sizing: border-box;
+    overflow: hidden;          /* Hide any overflow */
+}
+
+.share-canvas-wrapper .award-certificate {
+    border: 8px double #c09b2d;
+    box-shadow: none;
+    padding: 1.5rem; /* SLIGHTLY REDUCED PADDING: Was 2rem, to give content more space */
+    width: 100%;
+    max-width: 100%;
+    height: auto;    /* Content height will determine this */
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Distribute title, text, bottom-section */
+    align-items: center;
+    text-align: center;
+    box-sizing: border-box;
+    /* Ensure no 'position: relative;' here */
+}
+
+/* Font and margin adjustments for elements inside the shared certificate */
+.share-canvas-wrapper .award-title {
+    font-size: 1.8rem; /* Slightly reduced: Was 2rem */
+    margin-bottom: 1rem; /* Adjusted margin */
+    line-height: 1.2;
+}
+
+.share-canvas-wrapper .award-text {
+    font-size: 0.9rem; /* Slightly reduced: Was 1rem */
+    line-height: 1.5;  /* Adjusted line height */
+    margin-bottom: 1rem; /* Adjusted margin */
+}
+
+.share-canvas-wrapper .award-text strong {
+    font-size: 0.9rem; /* Match surrounding text */
+}
+
+/* Styling for the bottom section (logo and save-the-date) */
+.share-canvas-wrapper .bottom-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    width: 100%;
+    margin-top: auto; /* Pushes to the bottom if space allows */
+    padding: 0 0.5rem; /* Horizontal padding within bottom section */
+    box-sizing: border-box;
+}
+
+.share-canvas-wrapper .award-logo {
+    width: 65px;  /* Slightly reduced: Was 70px */
+    height: 65px; /* Slightly reduced: Was 70px */
+    margin: 0;
+    order: 2; /* Logo on the right */
+    opacity: 0.8;
+    filter: grayscale(50%);
+}
+
+.share-canvas-wrapper .save-the-date-text {
+    font-size: 0.75rem; /* Slightly reduced: Was 0.8rem */
+    color: #795548;
+    font-weight: normal;
+    line-height: 1.3;
+    margin: 0;
+    text-align: left;
+    order: 1; /* Text on the left */
+    flex-grow: 1;
+    padding-right: 0.5rem; /* Space between text and logo */
+}
+
+/* === End of Styles for the Share Canvas === */
 
     </style>
 </head>
@@ -269,7 +279,7 @@
         <div id="welcome-screen">
              <h1 class="text-4xl font-bold mb-6 romantic-font">
                 <span class="lang-zh">歡迎來玩記憶遊戲！</span>
-                <span class="lang-en">Welcome to the Memory Game! C</span>
+                <span class="lang-en">Welcome to the Memory Game! D</span>
             </h1>
             <p class="mb-5 text-gray-600" style="line-height: 1.6;">
                 <span class="lang-zh">遊戲規則：<br>1. 輸入您的姓名和電子郵件。<br>2. 點擊卡片，找出所有配對！<br>3. 完成後查看您的步數和時間。<br>4. 結果將自動發送給我們。</span>
