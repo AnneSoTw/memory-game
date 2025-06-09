@@ -279,7 +279,7 @@
         <div id="welcome-screen">
              <h1 class="text-4xl font-bold mb-6 romantic-font">
                 <span class="lang-zh">歡迎來玩記憶遊戲！</span>
-                <span class="lang-en">Welcome to the Memory Game! D</span>
+                <span class="lang-en">Welcome to the Memory Game!</span>
             </h1>
             <p class="mb-5 text-gray-600" style="line-height: 1.6;">
                 <span class="lang-zh">遊戲規則：<br>1. 輸入您的姓名和電子郵件。<br>2. 點擊卡片，找出所有配對！<br>3. 完成後查看您的步數和時間。<br>4. 結果將自動發送給我們。</span>
@@ -383,6 +383,8 @@
         const EMAILJS_SERVICE_ID = 'service_3qozdwc';
         const EMAILJS_TEMPLATE_ID = 'template_q69067c';
         const EMAILJS_PUBLIC_KEY = 'cDxOmMxePGWSWrLPG';
+
+        const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyuAl8U7Mz0rcFOJ3iAo7jFJadYfGhwEqGFnZOFQ4KA-A2_JTdRAJEQNPi6szEvS9yXyQ/exec'
 
         // --- Bilingual Text Content ---
         const TEXT_CONTENT = {
@@ -673,7 +675,30 @@
              emailStatusEl.className = className;
          }
 
-        function sendResultsEmail() {
+        function sendResultsEmail()
+        {
+              // --- Start of Google Sheet Data Preparation ---	
+		    const sheetData =
+		    {
+		        nickname: userNickname,
+                email: userEmail,
+                score: moves,
+                time: secondsElapsed,
+		    };
+
+	        fetch(APPS_SCRIPT_URL, 
+		    {
+	                method: 'POST',
+	                mode: 'no-cors', 
+	                headers: {
+	                    'Content-Type': 'application/json',
+	                },
+	                body: JSON.stringify(sheetData)
+	        })
+		    .then(res => console.log("Thank you! Your response has been saved."))
+		    .catch(err => console.log("Something went wrong!"));
+		    // --- End of Google Sheet Data Preparation ---
+            
             if (!EMAILJS_SERVICE_ID || EMAILJS_SERVICE_ID === 'YOUR_SERVICE_ID' ||
                 !EMAILJS_TEMPLATE_ID || EMAILJS_TEMPLATE_ID === 'YOUR_TEMPLATE_ID' ||
                 !EMAILJS_PUBLIC_KEY || EMAILJS_PUBLIC_KEY === 'YOUR_PUBLIC_KEY') {
