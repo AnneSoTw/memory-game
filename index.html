@@ -13,7 +13,6 @@
     <link rel="icon" href="https://mikeanneso.wordpress.com/wp-content/uploads/2025/07/wedding-logo-small.png">
 	
     <style>
-        /* --- Inherited Bilingual Wedding Theme Styles (Adapted) --- */
         body {
             font-family: 'Merriweather', 'Noto Sans TC', serif;
             background: linear-gradient(to bottom, #f5f0e8, #e6dacb);
@@ -23,11 +22,11 @@
             min-height: 100vh;
             padding: 1rem;
             color: #5d4037;
-            box-sizing: border-box; /* Include padding and border in element's total width and height */
+            box-sizing: border-box;
             user-select: none;
             -webkit-user-select: none;
             -ms-user-select: none;
-            overscroll-behavior: none; /* Prevent pull-to-refresh */
+            overscroll-behavior: none;
         }
         .game-container {
             background-color: #ffffff;
@@ -35,7 +34,7 @@
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
             padding: 2.5rem;
             width: 100%;
-            max-width: 650px; /* Adjust as needed */
+            max-width: 650px;
             text-align: center;
             border: 1px solid #d7ccc8;
             box-sizing: border-box;
@@ -85,20 +84,20 @@
             font-family: 'Merriweather', 'Noto Sans TC', serif;
             font-weight: bold;
             color: #8d6e63;
-            font-size: 0.9rem; /* Slightly smaller */
+            font-size: 0.9rem; 
         }
-        #game-info > div { /* Target moves and timer divs */
+        #game-info > div { 
             background-color: #f5f5f5;
             padding: 0.4rem 0.8rem;
             border-radius: 0.5rem;
             border: 1px solid #e0e0e0;
         }
-        #game-info .lang-zh, #game-info .lang-en { display: inline; margin: 0 0.1em; } /* Display inline for info */
+        #game-info .lang-zh, #game-info .lang-en { display: inline; margin: 0 0.1em; } 
         #game-info .lang-en { font-size: 0.95em; }
 
         #game-board {
             display: grid;
-            grid-template-columns: repeat(4, 1fr); /* Start with 4 for smaller screens */
+            grid-template-columns: repeat(4, 1fr); 
             gap: 10px;
             perspective: 1000px;
             margin-top: 1rem;
@@ -111,7 +110,7 @@
             cursor: pointer;
             position: relative;
             transform-style: preserve-3d;
-            transition: transform 0.6s, opacity 0.5s; /* Add opacity transition */
+            transition: transform 0.6s, opacity 0.5s; 
         }
 
         .card.is-flipped {
@@ -148,15 +147,12 @@
             border: 3px solid #fffaf0;
         }
 
-        /* Style matched cards - removing instead of fading */
         .card.is-removing {
             opacity: 0;
-            transform: scale(0.9); /* Optional shrink effect */
-            pointer-events: none; /* Make invisible cards unclickable */
+            transform: scale(0.9); 
+            pointer-events: none; 
         }
 
-
-        /* Responsive adjustments for game board */
         @media (min-width: 480px) {
             #game-board { grid-template-columns: repeat(5, 1fr); gap: 12px; }
         }
@@ -186,56 +182,53 @@
          .email-error { color: #c62828; }
          .email-sending { color: #6d4c41; }
 
-       /* === Styles for the Share Canvas in memo.html === */
-
 .share-canvas-wrapper {
     position: absolute;
-    left: -9999px; /* Position off-screen */
+    left: -9999px;
     top: -9999px;
-    width: 540px;   /* Instagram story width */
-    height: 960px;  /* Instagram story height */
+    width: 540px;   
+    height: 960px;  
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background-color: #fffaf0; /* Match certificate background */
-    padding: 40px;             /* Overall padding for the canvas */
+    background-color: #fffaf0; 
+    padding: 40px;             
     box-sizing: border-box;
-    overflow: hidden;          /* Hide any overflow */
+    overflow: hidden;          
 }
 
 .share-canvas-wrapper .award-certificate {
     border: 8px double #c09b2d;
     box-shadow: none;
-    padding: 1.5rem; /* SLIGHTLY REDUCED PADDING: Was 2rem, to give content more space */
+    padding: 1.5rem;
     width: 100%;
     max-width: 100%;
-    height: auto;    /* Content height will determine this */
+    height: auto;    
     margin: 0;
     display: flex;
     flex-direction: column;
-    justify-content: space-between; /* Distribute title, text, bottom-section */
+    justify-content: space-between; 
     align-items: center;
     text-align: center;
     box-sizing: border-box;
-    /* Ensure no 'position: relative;' here */
 }
 
 /* Font and margin adjustments for elements inside the shared certificate */
 .share-canvas-wrapper .award-title {
-    font-size: 1.8rem; /* Slightly reduced: Was 2rem */
-    margin-bottom: 1rem; /* Adjusted margin */
+    font-size: 1.8rem; 
+    margin-bottom: 1rem;
     line-height: 1.2;
 }
 
 .share-canvas-wrapper .award-text {
-    font-size: 0.9rem; /* Slightly reduced: Was 1rem */
-    line-height: 1.5;  /* Adjusted line height */
-    margin-bottom: 1rem; /* Adjusted margin */
+    font-size: 0.9rem; 
+    line-height: 1.5;  
+    margin-bottom: 1rem; 
 }
 
 .share-canvas-wrapper .award-text strong {
-    font-size: 0.9rem; /* Match surrounding text */
+    font-size: 0.9rem; 
 }
 
 /* Styling for the bottom section (logo and save-the-date) */
@@ -244,34 +237,31 @@
     justify-content: space-between;
     align-items: flex-end;
     width: 100%;
-    margin-top: auto; /* Pushes to the bottom if space allows */
-    padding: 0 0.5rem; /* Horizontal padding within bottom section */
+    margin-top: auto; 
+    padding: 0 0.5rem; 
     box-sizing: border-box;
 }
 
 .share-canvas-wrapper .award-logo {
-    width: 65px;  /* Slightly reduced: Was 70px */
-    height: 65px; /* Slightly reduced: Was 70px */
+    width: 65px;  
+    height: 65px; 
     margin: 0;
-    order: 2; /* Logo on the right */
+    order: 2; 
     opacity: 0.8;
     filter: grayscale(50%);
 }
 
 .share-canvas-wrapper .save-the-date-text {
-    font-size: 0.75rem; /* Slightly reduced: Was 0.8rem */
+    font-size: 0.75rem; 
     color: #795548;
     font-weight: normal;
     line-height: 1.3;
     margin: 0;
     text-align: left;
-    order: 1; /* Text on the left */
+    order: 1; 
     flex-grow: 1;
-    padding-right: 0.5rem; /* Space between text and logo */
+    padding-right: 0.5rem; 
 }
-
-/* === End of Styles for the Share Canvas === */
-
     </style>
 </head>
 <body>
@@ -343,7 +333,7 @@
                       <span class="lang-zh">謹將此證書頒發給<br><strong id="award-nickname-zh" class="text-lg"></strong><br>感謝您與我們一同慶祝並完成記憶遊戲<br>日期：<span id="completion-date-zh"></span><br>步數：<strong id="award-moves-zh"></strong>，時間：<strong id="award-time-zh"></strong> 秒</span>
                      <span class="lang-en">This certificate is happily presented to<br><strong id="award-nickname-en" class="text-lg"></strong><br>for celebrating with us and completing the Memory Game on <span id="completion-date-en"></span><br>with <strong id="award-moves-en"></strong> moves and a time of <strong id="award-time-en"></strong> seconds.</span>
                  </div>
-                 <img src="https://placehold.co/80x80/a1887f/ffffff?text=LOGO" alt="Logo" class="award-logo" id="award-logo" onerror="this.style.display='none'">
+                 <img src="https://mikeanneso.wordpress.com/wp-content/uploads/2025/07/wedding-logo-small.png" alt="Logo" class="award-logo" id="award-logo" onerror="this.style.display='none'">
                  <p class="save-the-date-text">
                     <span class="lang-zh">AS to Baby</span>
                     <span class="lang-en">AS - to You</span>
@@ -411,13 +401,11 @@
         const MANIFEST_URL = 'https://raw.githubusercontent.com/AnneSoTw/memory-game/refs/heads/main/photo.json';
 
         const numberOfPairs = 10; // How many pairs to use in the game (e.g., 10 pairs = 20 cards)
-        const cardBackImage = 'https://placehold.co/80x80/a1887f/ffffff?text=LOGO';
+        const cardBackImage = 'https://mikeanneso.wordpress.com/wp-content/uploads/2025/07/wedding-logo-small.png';
         const flipDelay = 800;
-        const matchFlipBackDelay = 500; // ** NEW: Delay before flipping 2nd matched card back **
-        const matchDisappearDelay = 300; // Delay after 2nd card flips back before fading
+        const matchFlipBackDelay = 500; 
+        const matchDisappearDelay = 300; 
 
-        // --- DOM Elements ---
-        // (DOM elements remain the same)
         const welcomeScreen = document.getElementById('welcome-screen');
         const startScreen = document.getElementById('start-screen');
         const gameScreen = document.getElementById('game-screen');
@@ -447,7 +435,6 @@
         const awardCertificateElement = document.querySelector('.award-certificate');
 
         // --- Game State Variables ---
-        // (State variables remain the same)
         let cards = [];
         let firstCard = null;
         let secondCard = null;
@@ -458,25 +445,21 @@
         let secondsElapsed = 0;
         let userNickname = '';
         let userEmail = '';
-        let allCardImages = []; // Now holds ALL pictures fetched from the manifests
+        let allCardImages = []; 
 
         // --- Functions ---
         async function fetchPhotoManifests(manifestUrl) 
         {
             try 
             {
-                console.log("Fetching photo manifests...");
-                // Show loading indicator while fetching
                 startError.innerHTML = `<span class="lang-zh">${TEXT_CONTENT.loadingPhotos.zh}</span><span class="lang-en">${TEXT_CONTENT.loadingPhotos.en}</span>`;
-                startError.classList.remove('text-red-600'); // Remove error styling
-                startError.classList.add('text-gray-600'); // Add neutral styling
+                startError.classList.remove('text-red-600'); 
+                startError.classList.add('text-gray-600'); 
 
-                // Fetch both manifests in parallel
                 const [response] = await Promise.all([
                     fetch(manifestUrl)
                 ]);
 
-                // Check response status explicitly
                 if (!response.ok)
                 {
                     console.error(`Failed to fetch manifest: HTTP status ${response.status} ${response.statusText}`);
@@ -485,79 +468,80 @@
 
                 try 
                 {
-                    allCardImages = await response.json(); // Expecting full URLs
-                    console.log("manifest parsed:", allCardImages);
+                    allCardImages = await response.json(); 
                 } 
                 catch (jsonError)
                 {
-                    console.error("Failed to parse manifest JSON:", jsonError);
                     throw new Error("Failed to parse manifest JSON.");
                 }
-                console.log("Combined pictures:", allCardImages);
 
-                startError.innerHTML = ''; // Clear loading message
-                startError.classList.remove('text-gray-600'); // Remove neutral styling
+                startError.innerHTML = ''; 
+                startError.classList.remove('text-gray-600');
 
-            } catch (error) {
-                console.error("Error fetching photo manifests:", error);
-                allCardImages = []; // Clear pictures on error
+            }
+			catch (error) 
+			{
+                allCardImages = [];
                 startError.innerHTML = `<span class="lang-zh">${TEXT_CONTENT.loadingPhotosError.zh}</span><span class="lang-en">${TEXT_CONTENT.loadingPhotosError.en}</span>`;
-                startError.classList.remove('text-gray-600'); // Remove neutral styling
-                startError.classList.add('text-red-600'); // Add error styling
-                // Disable start button if photos couldn't load
+                startError.classList.remove('text-gray-600'); 
+                startError.classList.add('text-red-600'); 
                 startGameButton.disabled = true;
 
             }
         }
-        function shuffle(array) {
-            for (let i = array.length - 1; i > 0; i--) {
+        function shuffle(array) 
+		{
+            for (let i = array.length - 1; i > 0; i--) 
+			{
                 const j = Math.floor(Math.random() * (i + 1));
                 [array[i], array[j]] = [array[j], array[i]];
             }
             return array;
         }
 
-        // ** NEW: Function to select random images **
-        function selectRandomImages(pool, count) {
-            const shuffledPool = shuffle([...pool]); // Shuffle a copy of the pool
-            return shuffledPool.slice(0, count); // Take the first 'count' images
+        function selectRandomImages(pool, count)
+		{
+            const shuffledPool = shuffle([...pool]);
+            return shuffledPool.slice(0, count);
         }
 
-
-        function startTimer() {
+        function startTimer()
+		{
             stopTimer();
             secondsElapsed = 0;
             timerDisplay.innerHTML = `<span class="lang-zh">時間:</span><span class="lang-en">Time:</span> ${secondsElapsed}s`;
             const startTime = Date.now();
-            timerInterval = setInterval(() => {
+            timerInterval = setInterval(() => 
+			{
                 secondsElapsed = Math.floor((Date.now() - startTime) / 1000);
                 timerDisplay.innerHTML = `<span class="lang-zh">時間:</span><span class="lang-en">Time:</span> ${secondsElapsed}s`;
             }, 1000);
         }
 
-        function stopTimer() {
+        function stopTimer() 
+		{
             clearInterval(timerInterval);
             timerInterval = null;
         }
 
-        function updateMoves() {
+        function updateMoves() 
+		{
             movesCounter.innerHTML = `<span class="lang-zh">步數:</span><span class="lang-en">Moves:</span> ${moves}`;
         }
 
-        async function createGameBoard() {
-            // ** NEW: Select random images for this game round **
+        async function createGameBoard()
+		{
             if (allCardImages.length === 0) 
             {
-                // Call fetchPhotoManifests without base URLs
                 await fetchPhotoManifests(MANIFEST_URL);
-                if (allCardImages.length === 0) {
+                if (allCardImages.length === 0)
+				{
                      console.error("No pictures available after fetching manifests.");
-                     // Error message is already set by fetchPhotoManifests
-                     return; // Stop game setup if no pictures loaded
+                     return; 
                 }
             }
             const selectedImages = selectRandomImages(allCardImages, numberOfPairs);
-            const gameImages = shuffle([...selectedImages, ...selectedImages]); // Duplicate and shuffle the selected pairs
+            const gameImages = shuffle([...selectedImages, ...selectedImages]); 
 
             gameBoard.innerHTML = '';
             cards = [];
@@ -565,7 +549,8 @@
             moves = 0;
             updateMoves();
 
-            gameImages.forEach((imageValue, index) => {
+            gameImages.forEach((imageValue, index) => 
+			{
                 const cardElement = document.createElement('div');
                 cardElement.classList.add('card');
                 cardElement.dataset.id = index;
@@ -591,16 +576,23 @@
             });
         }
 
-        function handleCardClick(event) {
-            if (lockBoard) return;
+        function handleCardClick(event)
+		{
+            if (lockBoard) 
+			{
+				return;
+			}
             const clickedCardElement = event.currentTarget;
             const clickedCardData = cards.find(card => card.id === parseInt(clickedCardElement.dataset.id));
 
-            if (clickedCardData.matched || clickedCardElement === firstCard?.element) return;
-
+            if (clickedCardData.matched || clickedCardElement === firstCard?.element) 
+			{
+				return;
+			}
             flipCard(clickedCardElement);
 
-            if (!firstCard) {
+            if (!firstCard) 
+			{
                 firstCard = clickedCardData;
                 return;
             }
@@ -612,73 +604,85 @@
             checkForMatch();
         }
 
-        function flipCard(cardElement) {
+        function flipCard(cardElement) 
+		{
             cardElement.classList.add('is-flipped');
         }
 
-        function unflipCard(cardElement) {
+        function unflipCard(cardElement) 
+		{
             cardElement.classList.remove('is-flipped');
         }
 
-        function checkForMatch() {
+        function checkForMatch() 
+		{
             const isMatch = firstCard.value === secondCard.value;
             isMatch ? handleMatch() : handleMismatch();
         }
 
-        function handleMatch() {
+        function handleMatch()
+		{
             firstCard.matched = true;
             secondCard.matched = true;
             matchesFound++;
 
-            lockBoard = true; // Keep board locked
+            lockBoard = true; 
 
-            // ** UPDATED Animation Timing **
-            setTimeout(() => { // Wait longer before flipping second card back
+            setTimeout(() => 
+			{ 
                 unflipCard(secondCard.element);
 
-                setTimeout(() => { // Wait after flip-back before fading
+                setTimeout(() =>
+				{ 
                     firstCard.element.classList.add('is-removing');
                     secondCard.element.classList.add('is-removing');
 
-                    resetBoard(); // Reset selections, unlock board AFTER fade starts
+                    resetBoard(); 
 
-                    if (matchesFound === numberOfPairs) { // Check against number of pairs
+                    if (matchesFound === numberOfPairs)
+					{ 
                         stopTimer();
                         setTimeout(endGame, 500);
                     }
                 }, matchDisappearDelay);
 
-            }, matchFlipBackDelay); // Use the new delay here
+            }, matchFlipBackDelay); 
         }
 
-
-        function handleMismatch() {
-            setTimeout(() => {
+        function handleMismatch() 
+		{
+            setTimeout(() => 
+			{
                 unflipCard(firstCard.element);
                 unflipCard(secondCard.element);
                 resetBoard();
             }, flipDelay);
         }
 
-
-        function resetBoard() {
+        function resetBoard()
+		{
             [firstCard, secondCard] = [null, null];
             lockBoard = false;
         }
 
-        function setEmailStatus(statusKey) {
+        function setEmailStatus(statusKey) 
+		{
              const status = TEXT_CONTENT[statusKey];
              let className = 'email-sending';
-             if (statusKey === 'emailSuccess') className = 'email-success';
-             if (statusKey.startsWith('emailError') || statusKey === 'emailNotConfigured') className = 'email-error';
-
+             if (statusKey === 'emailSuccess') 
+			 {
+				 className = 'email-success';
+			 }
+             if (statusKey.startsWith('emailError') || statusKey === 'emailNotConfigured')
+			 {
+				 className = 'email-error';
+			 }
              emailStatusEl.innerHTML = `<span class="lang-zh">${status.zh}</span><span class="lang-en">${status.en}</span>`;
              emailStatusEl.className = className;
          }
 
         function sendResultsEmail()
         {
-              // --- Start of Google Sheet Data Preparation ---	
 		    const sheetData =
 		    {
 		        nickname: userNickname,
@@ -698,18 +702,18 @@
 	        })
 		    .then(res => console.log("Thank you! Your response has been saved."))
 		    .catch(err => console.log("Something went wrong!"));
-		    // --- End of Google Sheet Data Preparation ---
             
             if (!EMAILJS_SERVICE_ID || EMAILJS_SERVICE_ID === 'YOUR_SERVICE_ID' ||
                 !EMAILJS_TEMPLATE_ID || EMAILJS_TEMPLATE_ID === 'YOUR_TEMPLATE_ID' ||
-                !EMAILJS_PUBLIC_KEY || EMAILJS_PUBLIC_KEY === 'YOUR_PUBLIC_KEY') {
-                console.warn("EmailJS credentials are placeholders. Skipping email send.");
+                !EMAILJS_PUBLIC_KEY || EMAILJS_PUBLIC_KEY === 'YOUR_PUBLIC_KEY') 
+			{
                 setEmailStatus('emailNotConfigured');
                 return;
             }
 
             setEmailStatus('emailSending');
-            const templateParams = {
+            const templateParams = 
+			{
                 nickname: userNickname,
                 email: userEmail,
                 score: moves,
@@ -718,10 +722,11 @@
             };
 
             emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams, EMAILJS_PUBLIC_KEY)
-                .then((response) => {
-                   console.log('EmailJS SUCCESS!', response.status, response.text);
+                .then((response) => 
+				{
                    setEmailStatus('emailSuccess');
-                }, (error) => {
+                }, (error) => 
+				{
                    console.error('EmailJS FAILED...', error);
                    let errorKey = 'emailErrorGeneric';
                    if (error.status === 400) errorKey = 'emailErrorTemplate';
@@ -730,7 +735,8 @@
                 });
         }
 
-        function endGame() {
+        function endGame()
+		{
             gameScreen.classList.add('hidden');
             resultsScreen.classList.remove('hidden');
             replayButton.classList.remove('hidden');
@@ -757,16 +763,18 @@
 
             sendResultsEmail();
 
-             try {
+             try
+			 {
                 localStorage.setItem('memoryGamePlayed_' + userEmail.toLowerCase(), 'true');
-             } catch (e) {
+             } 
+			 catch (e)
+			 {
                 console.warn("LocalStorage not available or failed to write.");
              }
         }
 
-        // --- Screen Transitions & Game Initialization ---
-
-        function showStartScreen() {
+        function showStartScreen() 
+		{
             welcomeScreen.classList.add('hidden');
             startScreen.classList.remove('hidden');
             gameScreen.classList.add('hidden');
@@ -774,7 +782,8 @@
             replayButton.classList.add('hidden');
         }
 
-        function setupAndStartGame() {
+        function setupAndStartGame() 
+		{
             startScreen.classList.add('hidden');
             resultsScreen.classList.add('hidden');
             gameScreen.classList.remove('hidden');
@@ -785,27 +794,34 @@
             resetBoard();
         }
 
-        function validateAndInitGame() {
+        function validateAndInitGame()
+		{
             userNickname = nicknameInput.value.trim();
             userEmail = emailInput.value.trim();
             startError.innerHTML = '';
 
-            if (!userNickname || !userEmail) {
+            if (!userNickname || !userEmail)
+			{
                 startError.innerHTML = `<span class="lang-zh">${TEXT_CONTENT.errorEnterDetails.zh}</span><span class="lang-en">${TEXT_CONTENT.errorEnterDetails.en}</span>`;
                 return;
             }
-            if (!/\S+@\S+\.\S+/.test(userEmail)) {
+            if (!/\S+@\S+\.\S+/.test(userEmail))
+			{
                  startError.innerHTML = `<span class="lang-zh">${TEXT_CONTENT.errorInvalidEmail.zh}</span><span class="lang-en">${TEXT_CONTENT.errorInvalidEmail.en}</span>`;
                  return;
             }
 
             let alreadyPlayed = false;
-            try {
+            try 
+			{
                 alreadyPlayed = localStorage.getItem('memoryGamePlayed_' + userEmail.toLowerCase()) === 'true';
-            } catch (e) {
+            } 
+			catch (e) 
+			{
                  console.warn("LocalStorage not available or failed to read.");
             }
-            if (alreadyPlayed) {
+            if (alreadyPlayed) 
+			{
                  startError.innerHTML = `<span class="lang-zh">${TEXT_CONTENT.errorAlreadyPlayed.zh}</span><span class="lang-en">${TEXT_CONTENT.errorAlreadyPlayed.en}</span>`;
                  return;
             }
@@ -813,104 +829,107 @@
             setupAndStartGame();
         }
 
-        function replayGame() {
-             // Directly setup and start the game using stored user info
-             if (userNickname && userEmail) { // Check if user info exists
+        function replayGame()
+		{
+             if (userNickname && userEmail)
+			 { 
                  setupAndStartGame();
-             } else {
-                 // Fallback: If user info somehow got lost, go back to start screen
+             } 
+			 else
+			 {
                  showStartScreen();
              }
         }
         
         async function shareCertificate()
         {
-            console.log("Attempting to share certificate...");
-            if (!awardCertificateElement) {
+            if (!awardCertificateElement)
+			{
                 console.error("Award certificate element not found.");
-                alert(TEXT_CONTENT.shareFailed.zh + '\n' + TEXT_CONTENT.shareFailed.en); // Basic fallback alert
+                alert(TEXT_CONTENT.shareFailed.zh + '\n' + TEXT_CONTENT.shareFailed.en); 
                 return;
             }
 
             let tempWrapper = null; 
-            try {
-                // Clone the certificate element to avoid modifying the visible DOM
+            try
+			{
                 const certificateClone = awardCertificateElement.cloneNode(true);
-                // Create a temporary wrapper for the desired aspect ratio
                 tempWrapper = document.createElement('div');
-                tempWrapper.classList.add('share-canvas-wrapper'); // Use the CSS class for styling
+                tempWrapper.classList.add('share-canvas-wrapper'); 
              
-                // Find the original logo and save-the-date elements in the clone
                 const clonedLogo = certificateClone.querySelector('.award-logo');
                 const clonedSaveTheDate = certificateClone.querySelector('.save-the-date-text');
-                // Create a new container for the bottom section (logo and save the date)
                 const bottomSection = document.createElement('div');
-                bottomSection.classList.add('bottom-section'); // Use the CSS class for styling
+                bottomSection.classList.add('bottom-section');
 
-               if (clonedSaveTheDate && clonedSaveTheDate.parentNode) {
-                     clonedSaveTheDate.parentNode.removeChild(clonedSaveTheDate); // Remove from original position
-                     bottomSection.appendChild(clonedSaveTheDate); // Add to new container
+               if (clonedSaveTheDate && clonedSaveTheDate.parentNode) 
+			   {
+                     clonedSaveTheDate.parentNode.removeChild(clonedSaveTheDate); 
+                     bottomSection.appendChild(clonedSaveTheDate); 
                 }
-                 if (clonedLogo && clonedLogo.parentNode) {
-                     clonedLogo.parentNode.removeChild(clonedLogo); // Remove from original position
-                     bottomSection.appendChild(clonedLogo); // Add to new container
+                 if (clonedLogo && clonedLogo.parentNode)
+				 {
+                     clonedLogo.parentNode.removeChild(clonedLogo); 
+                     bottomSection.appendChild(clonedLogo);
                  }
 
-                // Append the new bottom section container to the cloned certificate
                 certificateClone.appendChild(bottomSection);
-
-                // Append the cloned certificate to the temporary wrapper
                 tempWrapper.appendChild(certificateClone);
-
-                // Append the temporary wrapper to the body (off-screen)
                 document.body.appendChild(tempWrapper);
                 
-                // Use html2canvas to capture the certificate element
-                const canvas = await html2canvas(tempWrapper, {
-                    scale: 3, // Improve resolution on high-DPI screens
-                    logging: true, // Enable logging for debugging html2canvas
-                    useCORS: true // Attempt to use CORS for images if any
+                const canvas = await html2canvas(tempWrapper, 
+				 {
+                    scale: 3, 
+                    logging: true, 
+                    useCORS: true 
                 });
-                console.log("Certificate rendered to canvas.");
 
-                // Convert canvas to Blob
-                canvas.toBlob(async (blob) => {
-                    if (!blob) {
+                canvas.toBlob(async (blob) =>
+				{
+                    if (!blob) 
+					{
                         console.error("Failed to create blob from canvas.");
                          alert(TEXT_CONTENT.shareFailed.zh + '\n' + TEXT_CONTENT.shareFailed.en); // Basic fallback alert
                         return;
                     }
 
                     const file = new File([blob], 'match_game_certificate.png', { type: 'image/png' });
-                    console.log("Blob converted to File:", file);
 
-                    if (navigator.canShare && navigator.canShare({ files: [file] })) {
-                        try {
-                            console.log("Web Share API supported. Sharing...");
+                    if (navigator.canShare && navigator.canShare({ files: [file] })) 
+					{
+                        try 
+						{
                             await navigator.share({
                                 files: [file],
                                 title: 'Our Matchmaking Game Certificate!',
                             });
-                            console.log("Certificate shared successfully.");
-                        } catch (shareError) {
+                        } 
+						catch (shareError) 
+						{
                             console.error("Web Share failed:", shareError);
-                             if (shareError.name !== 'AbortError') {
+                             if (shareError.name !== 'AbortError')
+							 {
                                 alert(TEXT_CONTENT.shareFailed.zh + '\n' + TEXT_CONTENT.shareFailed.en);
                              }
                         }
-                    } else {
+                    } 
+					else 
+					{
                         console.warn("Web Share API Level 2 not supported or cannot share files.");
-                        // Fallback: Alert user or provide download link
                         alert(TEXT_CONTENT.shareUnsupported.zh + '\n' + TEXT_CONTENT.shareUnsupported.en);
                     }
                 }, 'image/png');
 
-            } catch (html2canvasError) {
+            } 
+			catch (html2canvasError) 
+			{
                 console.error("Error rendering certificate with html2canvas:", html2canvasError);
                  alert(TEXT_CONTENT.shareFailed.zh + '\n' + TEXT_CONTENT.shareFailed.en); // Basic fallback alert
-            } finally {
-                 // Always remove the temporary wrapper from the DOM
-                 if (tempWrapper && tempWrapper.parentNode) {
+            } 
+			finally
+			{
+                 if (tempWrapper && tempWrapper.parentNode)
+				 {
                     tempWrapper.parentNode.removeChild(tempWrapper);
                     console.log("Temporary share wrapper removed.");
                  }
