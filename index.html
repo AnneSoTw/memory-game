@@ -703,7 +703,7 @@
 		    .then(res => console.log("Thank you! Your response has been saved."))
 		    .catch(err => console.log("Something went wrong!"));
             
-            if (!EMAILJS_SERVICE_ID || EMAILJS_SERVICE_ID === 'YOUR_SERVICE_ID' ||
+         /*    if (!EMAILJS_SERVICE_ID || EMAILJS_SERVICE_ID === 'YOUR_SERVICE_ID' ||
                 !EMAILJS_TEMPLATE_ID || EMAILJS_TEMPLATE_ID === 'YOUR_TEMPLATE_ID' ||
                 !EMAILJS_PUBLIC_KEY || EMAILJS_PUBLIC_KEY === 'YOUR_PUBLIC_KEY') 
 			{
@@ -721,7 +721,7 @@
                 game_type: 'Memory Game'
             };
 
-            emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams, EMAILJS_PUBLIC_KEY)
+           emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams, EMAILJS_PUBLIC_KEY)
                 .then((response) => 
 				{
                    setEmailStatus('emailSuccess');
@@ -733,6 +733,7 @@
                    else if (error.status !== 0) errorKey = 'emailErrorConfig';
                    setEmailStatus(errorKey);
                 });
+			*/
         }
 
         function endGame()
