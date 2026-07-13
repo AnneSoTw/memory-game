@@ -301,33 +301,74 @@
     flex-grow: 1;
     padding-right: 0.5rem; 
 }
-    </style>
+
+		.rules-block {
+    display: inline-block;   /* keeps the block centered on the page */
+    text-align: left;        /* but text inside is left-aligned */
+    line-height: 1.6;
+    max-width: 480px;        /* adjust to taste */
+}
+
+.rules-title {
+    margin-bottom: 0.5rem;
+}
+
+.rules-list {
+    list-style: decimal;
+    padding-left: 1.5em;     /* wrapped lines indent under the text, not the number */
+    margin-bottom: 0.75rem;
+}
+
+.rules-list li {
+    margin-bottom: 0.5rem;
+}
+
+.rules-extra {
+    margin-top: 0.75rem;
+}
+</style>
 </head>
 <body>
     <div class="game-container">
 
-        <div id="welcome-screen">
-             <h1 class="text-4xl font-bold mb-6 romantic-font">
-                <span class="lang-zh">歡迎來玩記憶遊戲！</span>
-                <span class="lang-en">Welcome to the Memory Game!</span>
-            </h1>
-            <p class="mb-5 text-gray-600" style="line-height: 1.6;">
-                <span class="lang-zh">遊戲規則：<br>1. 輸入您的姓名與 Email。<br>（請記住您輸入的姓名，婚禮當天公布結果時將會使用這個名字！）
-					<br>2. 點擊卡片，找出所有配對成功的圖案。<br>3.完成遊戲後，您可以查看自己的總步數與完成時間。
-					<br>4. 遊戲結果將會自動送出。<br>5. 您也可以將成績分享到社群媒體，挑戰其他婚禮賓客，看看誰才是真正的記憶王者！
-				<br><br>🎁 婚禮當天，排名最高的玩家將獲得特別獎品！
-				<br><br>別忘了您使用的姓名，公布得獎者時，我們可能會叫到您的名字！</span>
-                <span class="lang-en">How to play:<br>1. Enter your name and email. <br>(Please remember the name you enter — it will be used to announce the results on the wedding day!)
-					<br>2. Click the cards to find all the matching pairs.<br>3. When you finish, you'll see your total moves and completion time.
-					<br>4. Your results will be submitted automatically.<br>5. You can also share your score on social media and challenge other wedding guests and see who is the true memory champion!
-				<br><br>🎁 On the wedding day, the top player will receive a special prize!
-				<br><br>Don't forget the name you used — it might be the one we call when announcing the winner!</span>
-            </p>
-            <button id="continue-button" class="game-button">
-                <span class="lang-zh">繼續</span>
-                <span class="lang-en">Continue</span>
-            </button>
-        </div>
+       <div id="welcome-screen">
+		    <h1 class="text-4xl font-bold mb-6 romantic-font">
+		        <span class="lang-zh">歡迎來玩記憶遊戲！</span>
+		        <span class="lang-en">Welcome to the Memory Game!</span>
+		    </h1>
+		
+		    <div class="mb-5 text-gray-600 rules-block">
+		        <span class="lang-zh">
+		            <p class="rules-title">遊戲規則：</p>
+		            <ol class="rules-list">
+		                <li>輸入您的姓名與 Email。<br><em>（請記住您輸入的姓名，婚禮當天公布結果時將會使用這個名字！）</em></li>
+		                <li>點擊卡片，找出所有配對成功的圖案。</li>
+		                <li>完成遊戲後，您可以查看自己的總步數與完成時間。</li>
+		                <li>遊戲結果將會自動送出。</li>
+		                <li>您也可以將成績分享到社群媒體，挑戰其他婚禮賓客，看看誰才是真正的記憶王者！</li>
+		            </ol>
+		            <p class="rules-extra">🎁 婚禮當天，排名最高的玩家將獲得特別獎品！</p>
+		            <p class="rules-extra">別忘了您使用的姓名，公布得獎者時，我們可能會叫到您的名字！</p>
+		        </span>
+		        <span class="lang-en">
+		            <p class="rules-title">How to play:</p>
+		            <ol class="rules-list">
+		                <li>Enter your name and email.<br><em>(Please remember the name you enter — it will be used to announce the results on the wedding day!)</em></li>
+		                <li>Click the cards to find all the matching pairs.</li>
+		                <li>When you finish, you'll see your total moves and completion time.</li>
+		                <li>Your results will be submitted automatically.</li>
+		                <li>You can also share your score on social media and challenge other wedding guests and see who is the true memory champion!</li>
+		            </ol>
+		            <p class="rules-extra">🎁 On the wedding day, the top player will receive a special prize!</p>
+		            <p class="rules-extra">Don't forget the name you used — it might be the one we call when announcing the winner!</p>
+		        </span>
+		    </div>
+		
+		    <button id="continue-button" class="game-button">
+		        <span class="lang-zh">繼續</span>
+		        <span class="lang-en">Continue</span>
+		    </button>
+		</div>
 
         <div id="start-screen" class="hidden">
             <h1 class="text-4xl font-bold mb-6 romantic-font">
